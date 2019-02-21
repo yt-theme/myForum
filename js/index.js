@@ -8,6 +8,7 @@ window.onload = function () {
     console.log('hash', window.location.hash)
     // 定义组件方法保存
     this.js = {}
+    this.data = {}
     // 页面加载后跳转此路由
     window.location.hash = ''
     window.location.hash = '/'
@@ -45,21 +46,23 @@ function appendComp (comp, ele) {
         return false
     } else {
         // cid
-        let cidName = comp['name']
         let div = document.createElement('div')
         
         // 设置组件外层元素cid class
         div.setAttribute('class', comp['name'])
-        div.setAttribute('cid', cidName)
+        div.setAttribute('cid', comp['name'])
         div.className = div.className + ' ' + 'pos_a w_100 h_100'
         selectE( '#' + ele )[0].appendChild(div)
         selectE( '#' + ele )[0].style.display = 'block'
         // 将组件添加到外层元素内
-        selectE( '.' + comp['name'] )[0].innerHTML = comp.html; that.js[comp['name']] = comp['js']
+        selectE( '.' + comp['name'] )[0].innerHTML = comp.html
+        that.js[comp['name']] = comp['js']
+        that.data[comp['name']] = comp['data']
         // 添加销毁方法
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
     }
 }
+console.log(window)
 
 // header 时间
 function headerTimeController () {
@@ -91,7 +94,6 @@ function ajax (method, url, paramsObj) {
         // get
         if (method === 'get' || method === 'GET') {
             xhttp.open('GET', url + '?' + params, true)
-            // 发送
             xhttp.send()
         // post
         } else if (method === 'post' || method === 'POST') {
@@ -102,13 +104,9 @@ function ajax (method, url, paramsObj) {
         // 回调定义
         function callback() {
             if (xhttp.readyState == 4) {
-                if (xhttp.status >= 200 && status < 300) {
-                    let resT = xhttp.responseText
-                    let resX = xhttp.responseXML
-                    resolve({ 'text': resT, 'xml': resX })                    
-                } else {
-                    reject(status)
-                }
+                let s = xhttp.status
+                if (s>= 200 && s< 300) { let resT = xhttp.responseText; let resX = xhttp.responseXML; resolve({ 'text': resT, 'xml': resX }) } 
+                else                   { reject(status)                                                                                      }
             }
         }
     })
@@ -119,10 +117,41 @@ function checkLogin () {
     return false
 }
 
+// 操作 localStorage
+class handleLocalStorage {
+    constructor (params) {
+            // { name : { a: 1, b: 2 }}
+            // ['it1', 'it2']
+            this.params = params
+    }
+    set () {
+        if (this.params.constructor === Object) {
+            let arr = this.params
+            for (let ite in arr) { localStorage.setItem(ite, JSON.stringify(arr[ite])) }
+        }
+    }
+    query () {
+        if (this.params.constructor === Array) {
+            let tmp_arr = {}, arr = this.params
+            arr.forEach((ite) => { tmp_arr[ite] = JSON.parse(localStorage.getItem(ite)) })
+            return tmp_arr
+        }
+    }
+    clear () {
+        localStorage.clear()
+    }
+    delete () {
+        if (this.params.constructor === Array) {
+            this.params.forEach((ite) => { localStorage.removeItem(ite) })
+        }
+    }
+
+}
+
 
 
 // ############### 组件事件 ########
-// 注册组件种子
+// (1) 注册组件种子
 // 组件种子初始化为 none
 [
     'loginContent',
@@ -130,6 +159,7 @@ function checkLogin () {
     'mainPage_toy'
 ].forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
 
+// (2) 编写组件注册的方法
 // 登录 显示登录框
 function loginShow () { checkLogin() === true ? null : appendComp(comp_loginModal(), 'loginContent') }
 // 点击logo

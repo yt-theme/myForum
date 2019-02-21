@@ -1,14 +1,55 @@
 window.addEventListener('load', function () {
+    // 提示弹出框组件
+    comp_popMessage = (htmVarArr) => {
+        const name = 'comp_popMessage'
+        const data = { }
+        const js = {
+
+        }
+        const html = `
+            <div onclick="js.${name}.destory(this)" class="pos_a z_999 opacity_Background w_100 h_100 flex flex_just_cent flex_alig_cent">
+                <div onclick="js.${name}.init(event)" class="bgc_9cacb9 box_shadw_777 bor_ra_2 padd_16px">
+
+                </div>
+            </div>
+        `
+        return {
+            name: name,
+            html: html,
+            data: data,
+            js:   js
+        }
+    }
     // 登录组件
     comp_loginModal = (htmVarArr) => {
         const name = 'comp_loginModal'
-        const data = {
-            a: 1
-        }
+        const data = { }
         const js = {
             init (event) { event.stopPropagation() },
             login () {
-                ajax('post', '/login/register', {'name': 'abc', 'passwd': 'defghij'})
+                let name = selectE('#comp_loginModal_name')[0].value
+                let passwd = selectE('#comp_loginModal_passwd')[0].value
+                if (name && passwd) {
+                    ajax('post', '/login/register', {'name': name, 'passwd': passwd})
+                    .then((v) => {
+                        let queryRes = JSON.parse(v['text'])
+                        if (queryRes['r'] === 1) {
+                            // 注册完成
+                            console.log('ok',queryRes)
+                            // 存入 localStorage
+                            new handleLocalStorage({'user': { 'name': name, 'passwd': passwd }}).set()
+                            console.log(new handleLocalStorage(['user']).query())
+                        // 注册问题
+                        } else if (queryRes['r'] === 0) { console.log('nok',queryRes) }
+                    })
+                    // 错误
+                    .catch((v) => { console.log('err', v) })
+                } else {
+                    // 提示
+                }
+            },
+            completeRegister () {
+                
             }
         }
         const html = `
@@ -16,8 +57,8 @@ window.addEventListener('load', function () {
                 <div onclick="js.${name}.init(event)" class="bgc_9cacb9 box_shadw_777 bor_ra_2 padd_16px">
                     <form class="form color_858585">
                         <div>
-                            <input placeholder="账号" class="bor_ra_2"/><br/>
-                            <input placeholder="密码" class="bor_ra_2"/>
+                            <input id="comp_loginModal_name" placeholder="账号" class="bor_ra_2"/><br/>
+                            <input id="comp_loginModal_passwd" placeholder="密码" class="bor_ra_2"/>
                         </div>
                         <div class="flex">
                             <input type="button" value="登录" class="bor_ra_2"/>
