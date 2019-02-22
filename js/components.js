@@ -26,11 +26,11 @@ window.addEventListener('load', function () {
         const data = { }
         const js = {
             init (event) { event.stopPropagation() },
-            login () {
+            register () {
                 let name = selectE('#comp_loginModal_name')[0].value
                 let passwd = selectE('#comp_loginModal_passwd')[0].value
                 if (name && passwd) {
-                    ajax('post', '/login/register', {'name': name, 'passwd': passwd})
+                    ajax('post', '/register', {'name': name, 'passwd': passwd})
                     .then((v) => {
                         let queryRes = JSON.parse(v['text'])
                         if (queryRes['r'] === 1) {
@@ -49,6 +49,21 @@ window.addEventListener('load', function () {
             },
             completeRegister () {
                 
+            },
+            login () {
+                let name = selectE('#comp_loginModal_name')[0].value
+                let passwd = selectE('#comp_loginModal_passwd')[0].value
+                if (name && passwd) {
+                    ajax('post', '/login', {'name': name, 'passwd': passwd})
+                    .then((v)  => { 
+                        console.log('ok',  v)
+                        // token存入本地存储
+                        let queryRes = JSON.parse(v['text'])
+                        new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
+                        console.log('token => login', new handleLocalStorage(['token']).query()['token'])
+                     })
+                    .catch((v) => { console.log('err', v) })
+                }
             }
         }
         const html = `
@@ -60,8 +75,8 @@ window.addEventListener('load', function () {
                             <input id="comp_loginModal_passwd" placeholder="密码" class="bor_ra_2"/>
                         </div>
                         <div class="flex">
-                            <input type="button" value="登录" class="bor_ra_2"/>
-                            <input type="button" onclick="js.${name}.login()" value="注册" class="bor_ra_2"/>
+                            <input type="button" onclick="js.${name}.login()"  value="登录" class="bor_ra_2"/>
+                            <input type="button" onclick="js.${name}.register()" value="注册" class="bor_ra_2"/>
                         </div>
                     </form>
                 </div>

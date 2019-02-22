@@ -4,6 +4,8 @@ var querystring = require('querystring')
 var jwt = require('jsonwebtoken')
 
 let db = require('./db.js')
+// 数据库初始化
+db.init()
 let jsonHead = {'Content-Type': 'application/json'}
 
 // public
@@ -28,10 +30,6 @@ class handleToken {
     check () {
         let currentTime=this.currentTime(),  publicPem=this.publicPem,  token=this.token,  returnResult=''
         try {
-            // let checkResult = jwt.verify(token, publicPem, { 'algorithms': ['RS256'] }) || {}
-            // let { exp = 0 } = checkResult
-            // if (currentTime <= exp) { returnResult = checkResult['name'] || {} }
-            // else { return -1 }
             let checkResult = jwt.verify(token, publicPem, (err, decoded) => {
                 if (err) { console.log('token check err', err); return }
             })
@@ -40,28 +38,63 @@ class handleToken {
         return returnResult
     }
 }
+// 用户登录 注册
+// login register
+class userLogin {
+    constructor (req, res, token) {
+        this.req=req;  this.res=res;  this.token=token
+    }
+    register () {
+        let req = this.req, res = this.res
+        if (req.method === 'POST') {
+            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
+            req.on("end", function(){
 
+                let dataObject = querystring.parse(decodeURI(reqData));
+
+                if (dataObject['name'] && dataObject['passwd']) {
+                    db.addUser(dataObject['name'], dataObject['passwd'])
+                    .then((v)  => { let token = new handleToken({'name': dataObject['name']}).create(); res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token }))})
+                    .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
+                } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
+            })
+        }
+    }
+    // login
+    login () { 
+        let req=this.req,  res=this.res,  token=this.token
+        if (req.method === 'POST') {
+            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
+            req.on("end", function(){
+
+                let dataObject = querystring.parse(decodeURI(reqData));
+
+                if (dataObject['name'] && dataObject['passwd']) {
+                    // 检查用户名 密码是否正常
+                    db.checkPasswd(dataObject['name'], dataObject['passwd'])
+                    .then((v) => { 
+                        if (v === 'ok') {
+                            // 如果正常则返回token
+                            let token = new handleToken({'name': dataObject['name']}).create()
+                            res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token }))
+                        } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'checkPwd err' })) }
+                     })
+                    .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
+                } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
+            })
+        }
+    }
+}
+
+
+// 对外接口
 // 处理路由请求
 module.exports = {
     // 返回页面
     fsResDo: (url, res) => { fs.readFile(url, "utf8", (err, data) => {if (err) { return false } else { res.end(data) }})},
-    // login register
-    api_register: (req, res) => {
-    if (req.method === 'POST') {
-        let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
-        req.on("end", function(){
-            let dataObject = querystring.parse(decodeURI(reqData));
-            if (dataObject['name'] && dataObject['passwd']) {
-                db.addUser(dataObject['name'], dataObject['passwd'])
-                .then((v)  => { 
-                    let token = new handleToken({'name': dataObject['name']}).create()
-                    res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token }))
-                })
-                .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
-            } else {
-                res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' }))
-            }
-        })
-    }
-}
+    // 注册
+    api_register: (req, res) => { return new userLogin(req, res).register() },
+    // 登录
+    api_login: (req, res) => { return new userLogin(req, res).login() },
+    
 }

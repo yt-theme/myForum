@@ -11,7 +11,7 @@ window.onload = function () {
     this.data = {}
     // 页面加载后跳转此路由
     window.location.hash = ''
-    window.location.hash = '/'
+    window.location.hash = new handleLocalStorage(['route']).query()['route'] || '/'
     // header 时间 初始值
     headerTimeController()
     // header 时间 计时开始
@@ -128,8 +128,8 @@ class handleLocalStorage {
     }
     set () {
         if (this.params.constructor === Object) {
-            let arr = this.params
-            for (let ite in arr) { localStorage.setItem(ite, JSON.stringify(arr[ite])) }
+            let obj = this.params
+            for (let ite in obj) { localStorage.setItem(ite, JSON.stringify(obj[ite])) }
         }
     }
     query () {

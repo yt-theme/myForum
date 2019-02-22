@@ -27,7 +27,7 @@ function sqlQ (sqlObj) {
         })
     })
 }
-function dbInit () {
+function dbInit_users_table () {
     return new Promise ((resolve, reject) => {
         sqlQ({ sql: `create table if not exists \`users\` (
                 \`id\` int(12) not null auto_increment,
@@ -40,7 +40,7 @@ function dbInit () {
             .catch((v) => { reject(v) })
     })
 }
-// handle db
+// handle user db
 class handle_user_DB {
     constructor (obj) {
         this.name = obj.name
@@ -90,32 +90,69 @@ class handle_user_DB {
     }
 }
 
-// new handle_user_DB({name: 'rse', passwd: 'resr'}).insert()
-// new handle_user_DB({name: 'rse', passwd: '11'}).delete()
-// new handle_user_DB({name: 'rse1', passwd: 'a', id: 12}).update()
-
-module.exports = {
+// 用户操作
+class handleUser {
+    constructor (name, passwd, token) {
+        this.name   = name
+        this.passwd = passwd
+        this.token  = token
+    }
     // 用户添加
-    addUser: (name, passwd) => {
+    add () {
+        let name=this.name,  passwd=this.passwd
         return new Promise ((resolve, reject) => {
-            // 先检测有没有 users 表 没有则生成
-            dbInit().then((v) => {
-                if (v) {
-                    new handle_user_DB({'name': name}).query().then((res) => {
-                        if (typeof res === 'object') {
-                            if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
-                            else { 
-                                new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
-                                .then((res)  => { resolve(res) })
-                                .catch((res) => { reject(res)  })
-                            }
-                        } else { reject('error') }
-                    })
-                }
+            new handle_user_DB({'name': name}).query().then((res) => {
+                if (typeof res === 'object') {
+                    if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
+                    else { 
+                        new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
+                        .then((res)  => { resolve(res) })
+                        .catch((res) => { reject(res)  }) }
+                } else { reject('error') }
             })
         })
     }
-    // addUser('usera', 'u1pwd')
-    // .then((res)  => { console.log('add user', res) })
-    // .catch((rea) => { console.log('add user', rea) })
+    // 检查用户密码
+    checkPasswd () {
+        let name=this.name,  passwd=this.passwd
+        return new Promise ((resolve, reject) => {
+            new handle_user_DB({'name': name}).query().then((res) => {
+                if (typeof res === 'object') {
+                    if (String(res[0] && res[0]['passwd']) === String(passwd)) {  resolve('ok') } 
+                    else { reject('name | password mismatch') }
+                } else { reject('error') }
+            })
+        })
+    }
+    // 检查用户token
+    checkToken () {
+        let name=this.name,  passwd=this.passwd, token=this.token
+        return new Promise ((resolve, reject) => {
+            new handle_user_DB({'name': name}).query().then((res) => {
+                if (typeof res === 'object') {
+                    if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
+                    else { 
+                        new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
+                        .then((res)  => { resolve(res) })
+                        .catch((res) => { reject(res)  }) }
+                } else { reject('error') }
+            })
+        })
+    }
+}
+
+
+// 对外方法
+module.exports = {
+    // 数据库初始化
+    init: () => {
+        // 用户表初始化
+        dbInit_users_table().then((v) => { console.log('db users table init', v)}).catch((v) => { console.log('db users table init err', v) })
+    },
+    // 用户添加
+    addUser: (name, passwd) => { return new handleUser(name, passwd).add() },
+    // 检查用户密码
+    checkPasswd: (name, passwd) => { return new handleUser(name, passwd).checkPasswd() },
+    // 检查token
+    checkUserToken: (name) => { return new handleUser(name).checkToken() }
 }

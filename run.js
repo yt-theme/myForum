@@ -23,8 +23,12 @@ server.on('request', function (req, res) {
             model.fsResDo("./css/public.css", res)
         break
         // 注册
-        case '/login/register':
+        case '/register':
             model.api_register(req, res)
+        break
+        // 登录
+        case '/login':
+            model.api_login(req, res)
         break
         default: break
     }

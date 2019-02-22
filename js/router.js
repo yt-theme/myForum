@@ -5,7 +5,11 @@ Router.prototype.validate = function () {
     this.router.forEach(item => { if (currentPath === item.path) { item.callBack.apply(null, arguments) } })
 }
 let r = new Router()
-window.addEventListener('hashchange', function () { let hash = window.location.hash.slice(1); r.validate(hash, window.location.href) }, false)
+window.addEventListener('hashchange', function () { 
+    let hash = window.location.hash.slice(1)
+    // 将当前路由存到本地存储
+    new handleLocalStorage({'route': hash}).set()
+    r.validate(hash, window.location.href) }, false)
 
 // mainPage
 r.route("/", function (routePath) {
