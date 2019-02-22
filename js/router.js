@@ -8,9 +8,14 @@ let r = new Router()
 window.addEventListener('hashchange', function () { let hash = window.location.hash.slice(1); r.validate(hash, window.location.href) }, false)
 
 // mainPage
-r.route("/", function (routePath) {  
-    mainPageShow_list()
-    mainPageShow_toy()
+r.route("/", function (routePath) {
+    // 清空以前组件
+    delCompSeedAll()
+    // 设置组件
+    mainPageShow_list(); mainPageShow_toy()
 })
 
-r.route("/select", function (routePath) { })
+r.route("/select", function (routePath) { 
+    // 清空以前组件
+    delCompSeedAll()
+ })

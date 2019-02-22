@@ -22,7 +22,9 @@ window.onload = function () {
 function selectE (elem) { return document.querySelectorAll(elem) }
 
 // 删除子元素
+// 删除指定
 function delChildE (elem, target) { elem.removeChild(target) }
+function delChildAll (elem) { elem.innerHTML = '' }
 
 // 获取数组某个相同元素
 function getArraySameIte (arr, target) { let n = 0; arr.forEach(ite => { if (ite === target) {  n += 1 } }); return n }
@@ -153,11 +155,15 @@ class handleLocalStorage {
 // ############### 组件事件 ########
 // (1) 注册组件种子
 // 组件种子初始化为 none
-[
+let compSeedAll = [
     'loginContent',
     'articleList',
     'mainPage_toy'
-].forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
+]
+compSeedAll.forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
+// 删除组件种子所有组件
+function delCompSeedAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
+
 
 // (2) 编写组件注册的方法
 // 登录 显示登录框
