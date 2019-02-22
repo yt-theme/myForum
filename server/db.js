@@ -94,7 +94,7 @@ class handle_user_DB {
 // new handle_user_DB({name: 'rse', passwd: '11'}).delete()
 // new handle_user_DB({name: 'rse1', passwd: 'a', id: 12}).update()
 
-module.exports  = {
+module.exports = {
     // 用户添加
     addUser: (name, passwd) => {
         return new Promise ((resolve, reject) => {

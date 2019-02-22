@@ -136,7 +136,7 @@ class handleLocalStorage {
             arr.forEach((ite) => { tmp_arr[ite] = JSON.parse(localStorage.getItem(ite)) })
             return tmp_arr
         }
-    }
+    } 
     clear () {
         localStorage.clear()
     }

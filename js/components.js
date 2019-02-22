@@ -35,10 +35,9 @@ window.addEventListener('load', function () {
                         let queryRes = JSON.parse(v['text'])
                         if (queryRes['r'] === 1) {
                             // 注册完成
-                            console.log('ok',queryRes)
                             // 存入 localStorage
-                            new handleLocalStorage({'user': { 'name': name, 'passwd': passwd }}).set()
-                            console.log(new handleLocalStorage(['user']).query())
+                            new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
+                            console.log('token', new handleLocalStorage(['token']).query()['token'])
                         // 注册问题
                         } else if (queryRes['r'] === 0) { console.log('nok',queryRes) }
                     })
