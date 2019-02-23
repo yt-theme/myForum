@@ -3,6 +3,7 @@
 .pos_r { position: relative; }
 .pos_f { position: fixed }
 .t_0 { top: 0; }
+.t_30px { top: 30px; }
 .b_0 { bottom: 0; }
 .r_0 { right: 0; }
 .l_0 { left: 0; }
@@ -14,6 +15,7 @@
 .z_0 { z-index: 0; }
 .z_s1 { z-index: -1; }
 .d_n { display: none; }
+.z_99999 { z-index: 99999; }
 
 
 
@@ -81,6 +83,11 @@
 
 
 /* ########### 公共样式 ########### */
+.comp_popMessage_comp {
+    left: calc(50vw - 95px);
+    width:190px;
+    min-height: 1em;
+}
 .opacity_Background { background-color: #333; opacity: 0.5; }
 /* 表单 */
 .form {
@@ -96,10 +103,14 @@
     margin: 8px;
     background-color: #f9f9f9;
 }
+#loginContent input {
+    background-color: #fff;
+    opacity: 1;
+}
 .form input[type=button] { width: 100%; }
 .articleList_left {
     width: calc(100% - 370px);
-    min-width: 692px;
+    min-width: 477px;
     height: calc(100% - 16px);
 }
 .articleList_left::-webkit-scrollbar { width: 0px; }

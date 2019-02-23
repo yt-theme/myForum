@@ -53,8 +53,15 @@ class userLogin {
                 let dataObject = querystring.parse(decodeURI(reqData));
 
                 if (dataObject['name'] && dataObject['passwd']) {
+                    // 增加用户 并且 将token存入数据库
+                    // 创建token
+                    let token = new handleToken({'name': dataObject['name']}).create()
+                    // 增加用户
                     db.addUser(dataObject['name'], dataObject['passwd'])
-                    .then((v)  => { let token = new handleToken({'name': dataObject['name']}).create(); res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token }))})
+                    .then((v)  => {
+                        // 返回token
+                        res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token })
+                    )})
                     .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
                 } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
             })

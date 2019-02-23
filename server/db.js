@@ -27,18 +27,25 @@ function sqlQ (sqlObj) {
         })
     })
 }
-function dbInit_users_table () {
-    return new Promise ((resolve, reject) => {
-        sqlQ({ sql: `create table if not exists \`users\` (
-                \`id\` int(12) not null auto_increment,
-                \`name\` char(30) default null,
-                \`passwd\` char(40) default null,
-                \`token\` char(40) default null,
-                primary key (\`id\`)
-            ) engine=InnoDB auto_increment=6 default charset=utf8;`, values: [] })
-            .then((v)  => { resolve(v) })
-            .catch((v) => { reject(v) })
-    })
+// 数据库 init
+class dbInit {
+    constructor () {
+
+    }
+// user 表初始化
+    dbInit_users_table () {
+        return new Promise ((resolve, reject) => {
+            sqlQ({ sql: `create table if not exists \`users\` (
+                    \`id\` int(12) not null auto_increment,
+                    \`name\` char(30) default null unique,
+                    \`passwd\` char(40) default null,
+                    \`token\` char(40) default null,
+                    primary key (\`id\`)
+                ) engine=InnoDB auto_increment=6 default charset=utf8;`, values: [] })
+                .then((v)  => { console.log('users table already init', v); resolve(v) })
+                .catch((v) => { console.log('users table init err', v); reject(v) })
+        })
+    }
 }
 // handle user db
 class handle_user_DB {
@@ -75,8 +82,8 @@ class handle_user_DB {
     update () {
         return new Promise ((resolve, reject) => {
             sqlQ({ 
-                sql: `update users set name=?, passwd=? where id=?`,
-                values: [ this.name, this.passwd, this.id ] 
+                sql: `update users set name=?, passwd=?, token=? where id=?`,
+                values: [ this.name, this.passwd, this.token, this.id ] 
             }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
         })
     }
@@ -92,10 +99,9 @@ class handle_user_DB {
 
 // 用户操作
 class handleUser {
-    constructor (name, passwd, token) {
+    constructor (name, passwd) {
         this.name   = name
         this.passwd = passwd
-        this.token  = token
     }
     // 用户添加
     add () {
@@ -105,7 +111,7 @@ class handleUser {
                 if (typeof res === 'object') {
                     if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
                     else { 
-                        new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
+                        new handle_user_DB({'name': name, 'passwd': passwd}).insert()
                         .then((res)  => { resolve(res) })
                         .catch((res) => { reject(res)  }) }
                 } else { reject('error') }
@@ -125,20 +131,29 @@ class handleUser {
         })
     }
     // 检查用户token
-    checkToken () {
-        let name=this.name,  passwd=this.passwd, token=this.token
-        return new Promise ((resolve, reject) => {
-            new handle_user_DB({'name': name}).query().then((res) => {
-                if (typeof res === 'object') {
-                    if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
-                    else { 
-                        new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
-                        .then((res)  => { resolve(res) })
-                        .catch((res) => { reject(res)  }) }
-                } else { reject('error') }
-            })
-        })
-    }
+    // checkToken () {
+    //     let name=this.name,  passwd=this.passwd, token=this.token
+    //     return new Promise ((resolve, reject) => {
+    //         new handle_user_DB({'name': name}).query().then((res) => {
+    //             if (typeof res === 'object') {
+    //                 if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
+    //                 else { 
+    //                     new handle_user_DB({'name': name, 'passwd': passwd, 'token': ''}).insert()
+    //                     .then((res)  => { resolve(res) })
+    //                     .catch((res) => { reject(res)  }) }
+    //             } else { reject('error') }
+    //         })
+    //     })
+    // }
+    // 更新用户token
+    // updateToken () {
+    //     let name=this.name,  passwd=this.passwd, token=this.token
+    //     return new Promise ((resolve, reject) => {
+    //         new handle_user_DB().update()
+    //         .then((v) => { })
+    //         .catch((v) => { })
+    //     })
+    // }
 }
 
 
@@ -147,7 +162,7 @@ module.exports = {
     // 数据库初始化
     init: () => {
         // 用户表初始化
-        dbInit_users_table().then((v) => { console.log('db users table init', v)}).catch((v) => { console.log('db users table init err', v) })
+        new dbInit().dbInit_users_table()
     },
     // 用户添加
     addUser: (name, passwd) => { return new handleUser(name, passwd).add() },

@@ -25,6 +25,18 @@ function selectE (elem) { return document.querySelectorAll(elem) }
 // 删除指定
 function delChildE (elem, target) { elem.removeChild(target) }
 function delChildAll (elem) { elem.innerHTML = '' }
+function delCompoAll (elem) { selectE(elem)[0].parentNode.style.display = 'none'; selectE(elem)[0].parentNode.innerHTML = '' }
+function delAllE (elem) { selectE(elem)[0].parentNode.innerHTML = '' }
+
+// 提示信息
+function messagePop (txt, time, callback) {
+    appendComp(comp_popMessage(txt || '提示'), 'popMessageComp', (compObj, ele) => {
+        // 自动关闭
+        setTimeout(() => { delCompoAll('.' + compObj['name']) }, time || 4000)
+        // 回调
+        if (typeof callback === 'function') { callback(compObj, ele) || false }
+    })
+ }
 
 // 获取数组某个相同元素
 function getArraySameIte (arr, target) { let n = 0; arr.forEach(ite => { if (ite === target) {  n += 1 } }); return n }
@@ -41,7 +53,7 @@ function getChildTargetEleListById (elem, idOrClass, target) {
 }
 
 // append 加载组件 compo为组件 ele为在哪个html标签内添加组件
-function appendComp (comp, ele) {
+function appendComp (comp, ele, callback) {
     // 全局查找有没有ele名称的id 如果有则不再添加
     if (getChildTargetEleListById('#' + ele, 'class', comp['name']).length>0) {
         console.log('已经加载过组件', comp['name'])
@@ -62,6 +74,10 @@ function appendComp (comp, ele) {
         that.data[comp['name']] = comp['data']
         // 添加销毁方法
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
+    }
+    // 回调
+    if (typeof callback === 'function') {
+        callback(comp, ele) || null
     }
 }
 console.log(window)
@@ -158,7 +174,8 @@ class handleLocalStorage {
 let compSeedAll = [
     'loginContent',
     'articleList',
-    'mainPage_toy'
+    'mainPage_toy',
+    'popMessageComp'
 ]
 compSeedAll.forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
 // 删除组件种子所有组件

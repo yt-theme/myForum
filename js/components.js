@@ -1,16 +1,14 @@
 window.addEventListener('load', function () {
     // 提示弹出框组件
-    comp_popMessage = (htmVarArr) => {
+    comp_popMessage = (txt) => {
         const name = 'comp_popMessage'
         const data = { }
         const js = {
 
         }
         const html = `
-            <div onclick="js.${name}.destory(this)" class="pos_a z_999 opacity_Background w_100 h_100 flex flex_just_cent flex_alig_cent">
-                <div onclick="js.${name}.init(event)" class="bgc_9cacb9 box_shadw_777 bor_ra_2 padd_16px">
-
-                </div>
+            <div onclick="js.${name}.destory(this)" class="comp_popMessage_comp pos_a t_30px z_99999 padd_8px bgc_9cacb9 color_f4f4f4 text_cent bor_ra_2">
+                <span>${txt}</span>
             </div>
         `
         return {
@@ -27,17 +25,21 @@ window.addEventListener('load', function () {
         const js = {
             init (event) { event.stopPropagation() },
             register () {
-                let name = selectE('#comp_loginModal_name')[0].value
-                let passwd = selectE('#comp_loginModal_passwd')[0].value
-                if (name && passwd) {
-                    ajax('post', '/register', {'name': name, 'passwd': passwd})
+                let uname = selectE('#comp_loginModal_name')[0].value
+                let upasswd = selectE('#comp_loginModal_passwd')[0].value
+                if (uname && upasswd) {
+                    ajax('post', '/register', {'name': uname, 'passwd': upasswd})
                     .then((v) => {
                         let queryRes = JSON.parse(v['text'])
                         if (queryRes['r'] === 1) {
                             // 注册完成
                             // 存入 localStorage
                             new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
-                            console.log('token', new handleLocalStorage(['token']).query()['token'])
+                            // 提示注册成功 自动执行登录状态
+                            
+                            // 关闭登录框
+                            messagePop('注册成功自动登录')
+                            delCompoAll('.comp_loginModal')
                         // 注册问题
                         } else if (queryRes['r'] === 0) { console.log('nok',queryRes) }
                     })
@@ -51,28 +53,33 @@ window.addEventListener('load', function () {
                 
             },
             login () {
-                let name = selectE('#comp_loginModal_name')[0].value
-                let passwd = selectE('#comp_loginModal_passwd')[0].value
-                if (name && passwd) {
-                    ajax('post', '/login', {'name': name, 'passwd': passwd})
+                let uname = selectE('#comp_loginModal_name')[0].value
+                let upasswd = selectE('#comp_loginModal_passwd')[0].value
+                if (uname && upasswd) {
+                    ajax('post', '/login', {'name': uname, 'passwd': upasswd})
                     .then((v)  => { 
-                        console.log('ok',  v)
                         // token存入本地存储
                         let queryRes = JSON.parse(v['text'])
-                        new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
-                        console.log('token => login', new handleLocalStorage(['token']).query()['token'])
+                        if (queryRes['r'] === 1) {
+                            new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
+                            console.log('token => login', new handleLocalStorage(['token']).query()['token'])
+                            // 提示信息
+                            messagePop('登录成功')
+                            delCompoAll('.comp_loginModal')
+                            // 自动关闭登录框
+                        } else { console.log('login err', v) }
                      })
                     .catch((v) => { console.log('err', v) })
                 }
             }
         }
         const html = `
-            <div onclick="js.${name}.destory(this)" class="pos_a z_999 opacity_Background w_100 h_100 flex flex_just_cent flex_alig_cent">
+            <div onclick="js.${name}.destory(this)" class="pos_a z_999 w_100 h_100 flex flex_just_cent flex_alig_cent">
                 <div onclick="js.${name}.init(event)" class="bgc_9cacb9 box_shadw_777 bor_ra_2 padd_16px">
                     <form class="form color_858585">
                         <div>
                             <input id="comp_loginModal_name" placeholder="账号" class="bor_ra_2"/><br/>
-                            <input id="comp_loginModal_passwd" placeholder="密码" class="bor_ra_2"/>
+                            <input id="comp_loginModal_passwd" type="password" placeholder="密码" class="bor_ra_2"/>
                         </div>
                         <div class="flex">
                             <input type="button" onclick="js.${name}.login()"  value="登录" class="bor_ra_2"/>
@@ -222,7 +229,8 @@ window.addEventListener('load', function () {
             <div class="w_100 h_100 over_f bgc_f7f7f7">
                 <ul>
                     ${ data.listData.reduce((state, ite) => {
-                        return state + '<li class="article_list_li flex padd_16px cur_p color_858585">' +                              '<span class="marg_lr_13px w_33 m_w_300px">主题: ' + ite.title + '</span>' +
+                        return state + '<li class="article_list_li flex padd_16px cur_p color_858585">' +
+                        '<span class="marg_lr_13px w_33 m_w_140px">主题: ' + ite.title + '</span>' +
                             '<span class="marg_lr_13px">时间: ' + ite.pushTime + '</span>' +
                             '<span class="marg_lr_13px m_w_140px">作者: ' + ite.author + '</span>' +
                         '</li>'
