@@ -1,4 +1,5 @@
 window.addEventListener('load', function () {
+    // 不可改动组件
     // 提示弹出框组件
     comp_popMessage = (txt) => {
         const name = 'comp_popMessage'
@@ -18,6 +19,8 @@ window.addEventListener('load', function () {
             js:   js
         }
     }
+
+    // 自定义组件
     // 登录组件
     comp_loginModal = (htmVarArr) => {
         const name = 'comp_loginModal'
@@ -36,12 +39,12 @@ window.addEventListener('load', function () {
                             // 存入 localStorage
                             new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
                             // 提示注册成功 自动执行登录状态
-                            
+                            messagePop('注册成功')
                             // 关闭登录框
-                            messagePop('注册成功自动登录')
                             delCompoAll('.comp_loginModal')
+                            refresh()
                         // 注册问题
-                        } else if (queryRes['r'] === 0) { console.log('nok',queryRes) }
+                        } else if (queryRes['r'] === 0) { messagePop('用户已存在') }
                     })
                     // 错误
                     .catch((v) => { console.log('err', v) })
@@ -62,12 +65,16 @@ window.addEventListener('load', function () {
                         let queryRes = JSON.parse(v['text'])
                         if (queryRes['r'] === 1) {
                             new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
-                            console.log('token => login', new handleLocalStorage(['token']).query()['token'])
-                            // 提示信息
-                            messagePop('登录成功')
-                            delCompoAll('.comp_loginModal')
+                            checkLoginStatu(1)
+                            .then((v) => {
+                                console.log('login', v)
+                                // 提示信息
+                                if (v) { messagePop('登录成功'); delCompoAll('.comp_loginModal') }
+                                else   { messagePop('登录失败') }
+                            })
+                            
                             // 自动关闭登录框
-                        } else { console.log('login err', v) }
+                        } else { messagePop('用户名或密码错误') }
                      })
                     .catch((v) => { console.log('err', v) })
                 }
@@ -245,6 +252,7 @@ window.addEventListener('load', function () {
             js:   js
         }
     }
+
     // right
     comp_mainPage_toy = (htmVarArr) => {
         const name = 'comp_mainPage_toy'

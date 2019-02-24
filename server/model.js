@@ -14,35 +14,48 @@ class handleToken {
     constructor (obj) {
         this.name        = obj.name
         this.token       = obj.token
+        this.req         = obj.req
         this.currentTime = () => { return Math.floor(Date.now() / 1000) }
         this.privatePem  = fs.readFileSync(path.join(__dirname, './rsa_private_key.pem'))
         this.publicPem   = fs.readFileSync(path.join(__dirname, './rsa_public_key.pem'))
     }
     create () {
         let createTime=this.currentTime(),  privatePem=this.privatePem,  name=this.name
-        // let token = jwt.sign({ 'name': name, 'exp': createTime + 3600 * 7 * 24 }, privatePem, { 'algorithm': 'RS256' })
-        // let header = { 'alg': 'RS256', 'typ': 'JWT' }
-        let payload = { 'name': name }
-        // let token = jwt.sign(header, payload, privatePem, { 'expiresIn':  })
-        let token = jwt.sign(payload, privatePem, { algorithm: 'RS256' })
-        return token
+        let payload = { 'name': name, 'exp': createTime + (60 * 60 * 24 * 367) }
+        return jwt.sign(payload, privatePem, { algorithm: 'RS256' })
+    }
+    // 获取请求头token
+    getReqToken () {
+        return this.req.headers.token
     }
     check () {
-        let currentTime=this.currentTime(),  publicPem=this.publicPem,  token=this.token,  returnResult=''
-        try {
-            let checkResult = jwt.verify(token, publicPem, (err, decoded) => {
-                if (err) { console.log('token check err', err); return }
-            })
-            returnResult = checkResult
-        } catch { }
-        return returnResult
+        let publicPem=this.publicPem,  token=this.token
+        return new Promise ((resolve, reject) => {        
+            try {
+                let checkResult = jwt.verify(token, publicPem, (err, decoded) => {
+                    if (err) { return false   }
+                    else     { return decoded }
+                })
+                let name=checkResult['name'], exp=checkResult['exp'], iat=checkResult['iat']
+                // 检查用户名是否存在
+                db.queryUser(name)
+                .then((v) => {
+                    if (v[0].name === name) {
+                        console.log('db res', v)
+                        if (checkResult && iat<=exp) { resolve(true) }
+                        else { reject(false) }
+                    } else { reject(false) }
+                })
+                .catch((v) => { reject(false) })
+            } catch { reject(false) }
+        })
     }
 }
 // 用户登录 注册
 // login register
 class userLogin {
-    constructor (req, res, token) {
-        this.req=req;  this.res=res;  this.token=token
+    constructor (req, res) {
+        this.req=req;  this.res=res
     }
     register () {
         let req = this.req, res = this.res
@@ -69,7 +82,7 @@ class userLogin {
     }
     // login
     login () { 
-        let req=this.req,  res=this.res,  token=this.token
+        let req=this.req,  res=this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
             req.on("end", function(){
@@ -91,6 +104,23 @@ class userLogin {
             })
         }
     }
+    checkLogin () {
+        let req=this.req, res=this.res
+
+        if (req.method === 'POST') {
+            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
+            req.on("end", function(){
+                // 验证token
+                let reqToken      = new handleToken({'req': req}).getReqToken()
+                new handleToken({'token': reqToken}).check()
+                .then((v) => { 
+                    console.log('checkTOkenRes', v)
+                    res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok' } : { 'r': 0, 'msg': '登录验证失败' }))
+                })
+                .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败' })) })
+            })
+        }
+    }
 }
 
 
@@ -103,5 +133,7 @@ module.exports = {
     api_register: (req, res) => { return new userLogin(req, res).register() },
     // 登录
     api_login: (req, res) => { return new userLogin(req, res).login() },
+    // 检查登录
+    api_checklogin: (req, res) => { return new userLogin(req, res).checkLogin() }
     
 }

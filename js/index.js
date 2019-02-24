@@ -10,29 +10,41 @@ window.onload = function () {
     this.js = {}
     this.data = {}
     // 页面加载后跳转此路由
-    window.location.hash = ''
-    window.location.hash = new handleLocalStorage(['route']).query()['route'] || '/'
+    changeRouter(new handleLocalStorage(['route']).query()['route'] || '/')
     // header 时间 初始值
     headerTimeController()
     // header 时间 计时开始
     setInterval(() => { headerTimeController() }, 1000)
+    // 检查登录状态
+    checkLoginStatu(1).then((v) => { })
 }
 
 // 选择器
 function selectE (elem) { return document.querySelectorAll(elem) }
-
+// 切换路由
+function changeRouter (route) { window.location.hash = ''; window.location.hash = route }
 // 删除子元素
 // 删除指定
 function delChildE (elem, target) { elem.removeChild(target) }
 function delChildAll (elem) { elem.innerHTML = '' }
-function delCompoAll (elem) { selectE(elem)[0].parentNode.style.display = 'none'; selectE(elem)[0].parentNode.innerHTML = '' }
+function delCompoAll (elem) { if (selectE(elem)[0]) { selectE(elem)[0].parentNode.style.display = 'none'; selectE(elem)[0].parentNode.innerHTML = '' }}
 function delAllE (elem) { selectE(elem)[0].parentNode.innerHTML = '' }
+
+// 元素 display 属性
+function displayE (elem, show) { selectE(elem)[0].style.display = show === 1 ? 'block' : 'none'  }
+
+// 刷新页面
+function refresh () { window.location.reload() }
+
+// localStorage取token
+function getLocalStorageToken (tokenKeyArr) { return new handleLocalStorage(tokenKeyArr).query() }
 
 // 提示信息
 function messagePop (txt, time, callback) {
+    if (selectE('.comp_popMessage')[0]) { delCompoAll('.comp_popMessage') }
     appendComp(comp_popMessage(txt || '提示'), 'popMessageComp', (compObj, ele) => {
         // 自动关闭
-        setTimeout(() => { delCompoAll('.' + compObj['name']) }, time || 4000)
+        setTimeout(() => { delCompoAll('.comp_popMessage') }, time || 4000)
         // 回调
         if (typeof callback === 'function') { callback(compObj, ele) || false }
     })
@@ -76,11 +88,8 @@ function appendComp (comp, ele, callback) {
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
     }
     // 回调
-    if (typeof callback === 'function') {
-        callback(comp, ele) || null
-    }
+    if (typeof callback === 'function') { callback(comp, ele) || null }
 }
-console.log(window)
 
 // header 时间
 function headerTimeController () {
@@ -115,8 +124,12 @@ function ajax (method, url, paramsObj) {
             xhttp.send()
         // post
         } else if (method === 'post' || method === 'POST') {
+            let token = ''
+            try { token = getLocalStorageToken(['token'])['token']['token'] }
+            catch { token = '' }
             xhttp.open('POST', url, true)
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+            xhttp.setRequestHeader("token", token)
             xhttp.send(params)
         }
         // 回调定义
@@ -131,8 +144,34 @@ function ajax (method, url, paramsObj) {
 }
 
 // 检查登录状态
-function checkLogin () {
-    return false
+function checkLoginStatu (mode) {
+    return new Promise ((resolve, reject) => {
+        let token = null
+        try   { token = getLocalStorageToken(['token'])['token']['token'] }
+        catch { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
+        // 如果已经登录
+        if (token) {
+            if (mode === 1) {
+                // 请求后端验证token
+                ajax('post', '/checklogin', {})
+                .then((v)  => {
+                    let queryRes = JSON.parse(v['text'])
+                    if (queryRes.r === 1) {
+                        displayE('#loginButton', 0); displayE('#logoutButton', 1)
+                        resolve(true)
+                    } else { 
+                        displayE('#loginButton', 1); displayE('#logoutButton', 0)
+                        resolve(false)
+                    }
+                })
+                .catch((v) => { console.log('checktoken er', v); resolve(false) })
+            } else { resolve(true) }
+        // 如果未登录
+        } else {
+            displayE('#loginButton', 1); displayE('#logoutButton', 0)
+            resolve(false)
+        }
+    })
 }
 
 // 操作 localStorage
@@ -150,9 +189,9 @@ class handleLocalStorage {
     }
     query () {
         if (this.params.constructor === Array) {
-            let tmp_arr = {}, arr = this.params
-            arr.forEach((ite) => { tmp_arr[ite] = JSON.parse(localStorage.getItem(ite)) })
-            return tmp_arr
+            let tmp = {}, arr = this.params
+            arr.forEach((ite) => { tmp[ite] = JSON.parse(localStorage.getItem(ite)) })
+            return tmp
         }
     } 
     clear () {
@@ -178,15 +217,22 @@ let compSeedAll = [
     'popMessageComp'
 ]
 compSeedAll.forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
-// 删除组件种子所有组件
-function delCompSeedAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
+// 销毁组件种子所有组件
+function destorySeedCompAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
 
 
 // (2) 编写组件注册的方法
 // 登录 显示登录框
-function loginShow () { checkLogin() === true ? null : appendComp(comp_loginModal(), 'loginContent') }
+function loginShow () { 
+    checkLoginStatu().then((v) => {v=== true ? null : appendComp(comp_loginModal(), 'loginContent') })
+}
 // 点击logo
-function clickLogo () { appendComp(comp_loginModal(), 'loginContent') }
+function clickLogo () { changeRouter('/') }
+// 注销
+function logout () {
+    new handleLocalStorage().clear();
+    checkLoginStatu(0).then((v) => { messagePop('退出账号', '', () => { refresh() }) }) 
+}
 
 // mainPage
 // left

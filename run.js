@@ -30,6 +30,10 @@ server.on('request', function (req, res) {
         case '/login':
             model.api_login(req, res)
         break
+        // 检查token
+        case '/checklogin':
+            model.api_checklogin(req, res)
+        break
         default: break
     }
 })
