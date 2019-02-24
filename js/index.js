@@ -224,7 +224,7 @@ function destorySeedCompAll () { compSeedAll.forEach((v) => { delChildAll(select
 // (2) 编写组件注册的方法
 // 登录 显示登录框
 function loginShow () { 
-    checkLoginStatu().then((v) => {v=== true ? null : appendComp(comp_loginModal(), 'loginContent') })
+    checkLoginStatu().then((v) => {appendComp(comp_loginModal(), 'loginContent') })
 }
 // 点击logo
 function clickLogo () { changeRouter('/') }

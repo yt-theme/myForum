@@ -25,26 +25,19 @@ class handleToken {
         return jwt.sign(payload, privatePem, { algorithm: 'RS256' })
     }
     // 获取请求头token
-    getReqToken () {
-        return this.req.headers.token
-    }
+    getReqToken () { return this.req.headers.token }
+    // 验证token
     check () {
         let publicPem=this.publicPem,  token=this.token
         return new Promise ((resolve, reject) => {        
             try {
-                let checkResult = jwt.verify(token, publicPem, (err, decoded) => {
-                    if (err) { return false   }
-                    else     { return decoded }
-                })
+                let checkResult = jwt.verify(token, publicPem, (err, decoded) => { if (err) { return false } else { return decoded } })
                 let name=checkResult['name'], exp=checkResult['exp'], iat=checkResult['iat']
                 // 检查用户名是否存在
                 db.queryUser(name)
                 .then((v) => {
-                    if (v[0].name === name) {
-                        console.log('db res', v)
-                        if (checkResult && iat<=exp) { resolve(true) }
-                        else { reject(false) }
-                    } else { reject(false) }
+                    if (v[0].name === name) { if (checkResult && iat<=exp) { resolve(true) } else { reject(false) } }
+                    else { reject(false) }
                 })
                 .catch((v) => { reject(false) })
             } catch { reject(false) }
@@ -71,10 +64,8 @@ class userLogin {
                     let token = new handleToken({'name': dataObject['name']}).create()
                     // 增加用户
                     db.addUser(dataObject['name'], dataObject['passwd'])
-                    .then((v)  => {
-                        // 返回token
-                        res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token })
-                    )})
+                    // 返回token
+                    .then((v)  => { res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token }) )})
                     .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
                 } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
             })
@@ -111,7 +102,7 @@ class userLogin {
             let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
             req.on("end", function(){
                 // 验证token
-                let reqToken      = new handleToken({'req': req}).getReqToken()
+                let reqToken = new handleToken({'req': req}).getReqToken()
                 new handleToken({'token': reqToken}).check()
                 .then((v) => { 
                     console.log('checkTOkenRes', v)

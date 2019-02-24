@@ -38,8 +38,8 @@ class dbInit {
                     \`id\` bigint not null auto_increment,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('users table already init', v); resolve(v) })
-                .catch((v) => { console.log('users table init err', v); reject(v) })
+                .then((v)  => { console.log('users table already init'); resolve(v) })
+                .catch((v) => { console.log('users table init err'); reject(v) })
         })
     }
     // forum 版块 表初始化
@@ -53,8 +53,8 @@ class dbInit {
                     \`create_time\` datetime default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('forum table already init', v); resolve(v) })
-                .catch((v) => { console.log('forum table init err', v); reject(v) })
+                .then((v)  => { console.log('forum table already init'); resolve(v) })
+                .catch((v) => { console.log('forum table init err'); reject(v) })
         }) 
     }
     // article_topic 主题 表初始化
@@ -69,8 +69,8 @@ class dbInit {
                     \`create_time\` datetime default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('article table already init', v); resolve(v) })
-                .catch((v) => { console.log('article table init err', v); reject(v) })
+                .then((v)  => { console.log('article table already init'); resolve(v) })
+                .catch((v) => { console.log('article table init err'); reject(v) })
         }) 
     }
 }
