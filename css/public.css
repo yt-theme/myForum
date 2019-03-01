@@ -34,9 +34,11 @@
 .m_w_300px { min-width: 300px; }
 .m_w_140px { min-width: 140px; }
 .h_100 { height: 100%; }
+.h_50 { height: 50%; }
 .h_33 { height: 33.333%; }
 .h_41px { height: 41px; }
 .h_main { height: calc(100vh - 43px); }
+.min_h_280px { min-height: 280px; }
 
 
 
@@ -49,6 +51,7 @@
 .marg_tb_8px { margin-top: 8px; margin-bottom: 8px; }
 .marg_t_8px { margin-top: 8px; }
 .marg_lr_13px { margin-left: 13px; margin-right: 13px; }
+.bor_0 { border: 0; }
 .bor_1_r { border: 1px solid red; }
 .bor_ra_2 { border-radius: 2px; }
 
@@ -78,9 +81,9 @@
 /* ########### 鼠标 ########### */
 .cur_p { cursor: pointer }
 
-/* ########### overflow ########### */
+/* ########### 其它 ########### */
 .over_f { overflow: auto; }
-
+.appearance_n { appearance:none; -moz-appearance:none; -webkit-appearance:none; }
 
 /* ########### 公共样式 ########### */
 .comp_popMessage_comp {
@@ -123,4 +126,11 @@
 }
 .toyList_right {
     min-width: 370px;
+}
+
+/* ############# screen ######## */
+@media screen and (max-width: 1280px) {
+    .comp_mainPage_list_top { flex-direction: column-reverse; height: 100%; }
+    .comp_mainPage_list_top_left { width: 100%; height: 50%; }
+    .comp_mainPage_list_top_right { width: 100%; height: 50%; }
 }

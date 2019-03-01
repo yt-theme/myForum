@@ -8,7 +8,14 @@ window.onload = function () {
     console.log('hash', window.location.hash)
     // 定义组件方法保存
     this.js = {}
-    this.data = {}
+    // 监听 this.data 变化
+    proxyDataCallback = (obj, key, value) => { obj[key] = value; return { 'obj': obj, 'key': key, 'value': value } }
+    let validator = { 
+        set: function(obj, key, value, proxy) { proxyDataCallback(obj, key, value); return Reflect.get(obj, key, value, proxy) }
+    }
+    let data = new Proxy({}, validator)
+    that.data = data
+
     // 页面加载后跳转此路由
     changeRouter(new handleLocalStorage(['route']).query()['route'] || '/')
     // header 时间 初始值
@@ -17,7 +24,10 @@ window.onload = function () {
     setInterval(() => { headerTimeController() }, 1000)
     // 检查登录状态
     checkLoginStatu(1).then((v) => { })
+
 }
+
+console.log(window)
 
 // 选择器
 function selectE (elem) { return document.querySelectorAll(elem) }
@@ -29,16 +39,16 @@ function delChildE (elem, target) { elem.removeChild(target) }
 function delChildAll (elem) { elem.innerHTML = '' }
 function delCompoAll (elem) { if (selectE(elem)[0]) { selectE(elem)[0].parentNode.style.display = 'none'; selectE(elem)[0].parentNode.innerHTML = '' }}
 function delAllE (elem) { selectE(elem)[0].parentNode.innerHTML = '' }
-
+// 销毁组件种子所有组件
+function destorySeedCompAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
 // 元素 display 属性
 function displayE (elem, show) { selectE(elem)[0].style.display = show === 1 ? 'block' : 'none'  }
-
 // 刷新页面
 function refresh () { window.location.reload() }
-
 // localStorage取token
 function getLocalStorageToken (tokenKeyArr) { return new handleLocalStorage(tokenKeyArr).query() }
-
+// localStorage取id
+function getLocalStorageId (id) { return new handleLocalStorage([id]).query() }
 // 提示信息
 function messagePop (txt, time, callback) {
     if (selectE('.comp_popMessage')[0]) { delCompoAll('.comp_popMessage') }
@@ -49,8 +59,7 @@ function messagePop (txt, time, callback) {
         if (typeof callback === 'function') { callback(compObj, ele) || false }
     })
  }
-
-// 获取数组某个相同元素
+// 获取数组某个相同元素有几个
 function getArraySameIte (arr, target) { let n = 0; arr.forEach(ite => { if (ite === target) {  n += 1 } }); return n }
 
 // 获取id为某元素中的id或class为某值的元素列表
@@ -78,17 +87,19 @@ function appendComp (comp, ele, callback) {
         div.setAttribute('class', comp['name'])
         div.setAttribute('cid', comp['name'])
         div.className = div.className + ' ' + 'pos_a w_100 h_100'
-        selectE( '#' + ele )[0].appendChild(div)
-        selectE( '#' + ele )[0].style.display = 'block'
+        selectE('#' + ele)[0].appendChild(div)
+        displayE('#' + ele, 1)
         // 将组件添加到外层元素内
-        selectE( '.' + comp['name'] )[0].innerHTML = comp.html
+        selectE('.' + comp['name'])[0].innerHTML = comp['html']
         that.js[comp['name']] = comp['js']
         that.data[comp['name']] = comp['data']
+        console.log('data', that.data)
+
         // 添加销毁方法
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
     }
     // 回调
-    if (typeof callback === 'function') { callback(comp, ele) || null }
+    if (typeof callback === 'function') { callback(comp, ele) }
 }
 
 // header 时间
@@ -156,21 +167,13 @@ function checkLoginStatu (mode) {
                 ajax('post', '/checklogin', {})
                 .then((v)  => {
                     let queryRes = JSON.parse(v['text'])
-                    if (queryRes.r === 1) {
-                        displayE('#loginButton', 0); displayE('#logoutButton', 1)
-                        resolve(true)
-                    } else { 
-                        displayE('#loginButton', 1); displayE('#logoutButton', 0)
-                        resolve(false)
-                    }
+                    if (queryRes.r === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
+                    else { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
                 })
                 .catch((v) => { console.log('checktoken er', v); resolve(false) })
             } else { resolve(true) }
         // 如果未登录
-        } else {
-            displayE('#loginButton', 1); displayE('#logoutButton', 0)
-            resolve(false)
-        }
+        } else { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
     })
 }
 
@@ -194,45 +197,42 @@ class handleLocalStorage {
             return tmp
         }
     } 
-    clear () {
-        localStorage.clear()
-    }
-    delete () {
-        if (this.params.constructor === Array) {
-            this.params.forEach((ite) => { localStorage.removeItem(ite) })
-        }
-    }
+    clear () { localStorage.clear() }
+    delete () { if (this.params.constructor === Array) { this.params.forEach((ite) => { localStorage.removeItem(ite) }) } }
 
 }
 
-
-
-// ############### 组件事件 ########
+// ############### 自定义事件 ########
+// 选择forum
+function headerSelectForum_change (_this_) {
+    let v = _this_['options'][_this_['selectedIndex']]['value']
+    if (v) {
+        switch (v) {
+            case 'Home':     changeRouter('/'); break;
+            case 'Electric': changeRouter('/electric'); break;
+            default: break
+        }
+    }
+}
+// ############### 组件事件 #########
 // (1) 注册组件种子
 // 组件种子初始化为 none
 let compSeedAll = [
     'loginContent',
     'articleList',
     'mainPage_toy',
-    'popMessageComp'
+    'popMessageComp',
 ]
-compSeedAll.forEach((v) => { selectE('#' + v)[0].style.display = 'none' })
-// 销毁组件种子所有组件
-function destorySeedCompAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
+compSeedAll.forEach((v) => { displayE('#' + v, 0) })
 
 
 // (2) 编写组件注册的方法
 // 登录 显示登录框
-function loginShow () { 
-    checkLoginStatu().then((v) => {appendComp(comp_loginModal(), 'loginContent') })
-}
+function loginShow () { checkLoginStatu().then((v) => {appendComp(comp_loginModal(), 'loginContent') }) }
 // 点击logo
 function clickLogo () { changeRouter('/') }
 // 注销
-function logout () {
-    new handleLocalStorage().clear();
-    checkLoginStatu(0).then((v) => { messagePop('退出账号', '', () => { refresh() }) }) 
-}
+function logout () { new handleLocalStorage().clear(); checkLoginStatu(0).then((v) => { messagePop('退出账号', '', () => { refresh() }) }) }
 
 // mainPage
 // left

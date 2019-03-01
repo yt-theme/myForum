@@ -13,13 +13,12 @@ window.addEventListener('hashchange', function () {
 
 // mainPage
 r.route("/", (routePath) => {
-    // 清空以前组件
     destorySeedCompAll()
-    // 设置组件
-    mainPageShow_list(); mainPageShow_toy()
+    mainPageShow_list()
+    mainPageShow_toy()
 })
 
-r.route("/setting", (routePath) => { 
-    // 清空以前组件
+r.route("/electric", (routePath) => { 
     destorySeedCompAll()
+    mainPageShow_toy()
  })

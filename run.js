@@ -2,7 +2,7 @@ var http = require('http')
 
 let server = http.createServer()
 let port = 6969
-let model = require('./server/model.js')
+let model = require('./server/model/model.js')
 
 server.on('request', function (req, res) {
     console.log(req.url)
