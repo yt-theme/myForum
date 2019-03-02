@@ -1,54 +1,5 @@
 let init = require("./db_init")
-let def = require("./db_def")
-
-// handle user db
-class handle_user_DB {
-    constructor (obj) {
-        this.name = obj.name
-        this.passwd = obj.passwd
-        this.id = obj.id
-    }
-    insert () {
-        return new Promise ((resolve, reject) => {
-            def.SqlQ({
-                sql: `insert into users (name, passwd) values (?, ?)`,
-                values: [ this.name, this.passwd ] 
-            }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
-        })
-    }
-    delete () {
-        return new Promise ((resolve, reject) => {
-            def.SqlQ({ 
-                sql: `delete from users where name = ?`,
-                values: [ this.name ] 
-            }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
-        })
-    }
-    update () {
-        return new Promise ((resolve, reject) => {
-            def.SqlQ({ 
-                sql: `update users set name=?, passwd=? where id=?`,
-                values: [ this.name, this.passwd, this.id ] 
-            }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
-        })
-    }
-    query () {
-        return new Promise ((resolve, reject) => {
-            def.SqlQ({ 
-                sql: `select * from users where id = ?`,
-                values: [ this.id ] 
-            }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
-        })
-    }
-    nameQuery () {
-        return new Promise ((resolve, reject) => {
-            def.SqlQ({ 
-                sql: `select * from users where name = ?`,
-                values: [ this.name ] 
-            }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) })
-        })
-    }
-}
+let handle = require("./db_handle")
 
 // 用户操作
 class handleUser {
@@ -62,11 +13,11 @@ class handleUser {
     add () {
         let name=this.name,  passwd=this.passwd
         return new Promise ((resolve, reject) => {
-            new handle_user_DB({'name': name}).nameQuery().then((res) => {
+            new handle.Handle_user_DB({'name': name}).nameQuery().then((res) => {
                 if (typeof res === 'object') {
                     if (res[0] && res[0]['name'] === name) {  reject('name exist') } 
                     else { 
-                        new handle_user_DB({'name': name, 'passwd': passwd}).insert()
+                        new handle.Handle_user_DB({'name': name, 'passwd': passwd}).insert()
                         .then((res)  => { resolve(res) })
                         .catch((res) => { reject(res)  }) }
                 } else { reject('error') }
@@ -77,7 +28,7 @@ class handleUser {
     checkPasswd () {
         let name=this.name,  passwd=this.passwd
         return new Promise ((resolve, reject) => {
-            new handle_user_DB({'name': name}).nameQuery().then((res) => {
+            new handle.Handle_user_DB({'name': name}).nameQuery().then((res) => {
                 if (typeof res === 'object') {
                     if (String(res[0] && res[0]['passwd']) === String(passwd)) {  resolve('ok') } 
                     else { reject('name | password mismatch') }
@@ -88,7 +39,7 @@ class handleUser {
     query () {
         let id=this.id
         return new Promise ((resolve, reject) => {
-            new handle_user_DB({'id': id}).query().then((res) => {
+            new handle.Handle_user_DB({'id': id}).query().then((res) => {
                 if (typeof res === 'object') { resolve(res) } else { reject(false) }
             })
         })
@@ -96,7 +47,7 @@ class handleUser {
     nameQuery () {
         let name=this.name
         return new Promise ((resolve, reject) => {
-            new handle_user_DB({'name': name}).nameQuery().then((res) => {
+            new handle.Handle_user_DB({'name': name}).nameQuery().then((res) => {
                 if (typeof res === 'object') { resolve(res) } else { reject(false) }
             })
         })
