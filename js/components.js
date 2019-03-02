@@ -43,7 +43,8 @@ window.addEventListener('load', function () {
                 if (uname && upasswd) {
                     ajax('post', '/register', {'name': uname, 'passwd': upasswd})
                     .then((v) => {
-                        let queryRes = JSON.parse(v['text'])
+                        console.log('v', v)
+                        let queryRes = v['data']
                         if (queryRes['r'] === 1) {
                             // 注册完成
                             // 存入 localStorage
@@ -64,7 +65,7 @@ window.addEventListener('load', function () {
                     ajax('post', '/login', {'name': uname, 'passwd': upasswd})
                     .then((v)  => { 
                         // token存入本地存储
-                        let queryRes = JSON.parse(v['text'])
+                        let queryRes = v['data']
                         if (queryRes['r'] === 1) {
                             new handleLocalStorage({'token': { 'id': queryRes['id'] }}).set(); new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
                             checkLoginStatu(1)
@@ -147,7 +148,6 @@ window.addEventListener('load', function () {
                 4
                 </div>
             </div>
-
         `
         return {
             name: name,

@@ -147,8 +147,8 @@ function ajax (method, url, paramsObj) {
         function callback() {
             if (xhttp.readyState == 4) {
                 let s = xhttp.status
-                if (s>= 200 && s< 300) { let resT = xhttp.responseText; let resX = xhttp.responseXML; resolve({ 'text': resT, 'xml': resX }) } 
-                else                   { reject(status)                                                                                      }
+                if (s>= 200 && s< 300) { let resT = xhttp.responseText; let resX = xhttp.responseXML; resolve({ data: JSON.parse(resT) }) } 
+                else                   { reject(status)                                                                                   }
             }
         }
     })
@@ -166,7 +166,7 @@ function checkLoginStatu (mode) {
                 // 请求后端验证token
                 ajax('post', '/checklogin', {})
                 .then((v)  => {
-                    let queryRes = JSON.parse(v['text'])
+                    let queryRes = v['data']
                     if (queryRes.r === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
                     else { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
                 })
