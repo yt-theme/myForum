@@ -1,4 +1,5 @@
 let mysql = require('mysql')
+
 var mysqlPool = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -6,7 +7,7 @@ var mysqlPool = mysql.createPool({
     database: 'forum'
 })
 // query mysql
-let SqlQ = (sqlObj) => {
+function SqlQ (sqlObj) {
     return new Promise ((resolve, reject) => {
         mysqlPool.getConnection(function(err, connection) {
             if (err) { reject('err'); return false }
@@ -20,5 +21,5 @@ let SqlQ = (sqlObj) => {
 }
 
 module.exports = {
-    SqlQ: SqlQ
+    SqlQ : SqlQ
 }

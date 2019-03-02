@@ -104,5 +104,5 @@ let Db_init = () => {
 }
 
 module.exports = {
-    Db_init: Db_init
+    Db_init : Db_init
 }

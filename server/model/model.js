@@ -1,140 +1,20 @@
-var fs = require('fs')
-var path = require('path')
-var querystring = require('querystring')
-var jwt = require('jsonwebtoken')
+var fs     = require('fs')
+let method = require('./model_method')
+let init   = require('./model_init')
 
-let db = require('../db/db.js')
-// 数据库初始化
-db.init()
-let jsonHead = {'Content-Type': 'application/json'}
-
-// public
-// token 用来每登录或注册刷新或生成token
-class handleToken {
-    constructor (obj) {
-        this.id          = obj.id
-        this.name        = obj.name
-        this.token       = obj.token
-        this.req         = obj.req
-        this.currentTime = () => { return Math.floor(Date.now() / 1000) }
-        this.privatePem  = fs.readFileSync(path.join(__dirname, '../rsa_private_key.pem'))
-        this.publicPem   = fs.readFileSync(path.join(__dirname, '../rsa_public_key.pem'))
-    }
-    create () {
-        let createTime=this.currentTime(),  privatePem=this.privatePem,  id=this.id
-        let payload = { 'id': id, 'exp': createTime + (60 * 60 * 24 * 367) }
-        return jwt.sign(payload, privatePem, { algorithm: 'RS256' })
-    }
-    // 获取请求头token
-    getReqToken () { return this.req.headers.token }
-    // 验证token
-    check () {
-        let publicPem=this.publicPem,  token=this.token
-        return new Promise ((resolve, reject) => {        
-            try {
-                let checkResult = jwt.verify(token, publicPem, (err, decoded) => { if (err) { return false } else { return decoded } })
-                let id=checkResult['id'], exp=checkResult['exp'], iat=checkResult['iat']
-                // 检查用户是否存在
-                db.queryUser(id)
-                .then((v) => {
-                    if (v[0]['id'] === id) { if (checkResult && iat<=exp) { resolve(true) } else { reject(false) } }
-                    else { reject(false) }
-                })
-                .catch((v) => { reject(false) })
-            } catch { reject(false) }
-        })
-    }
-}
-// 用户登录 注册
-// login register
-class userLogin {
-    constructor (req, res) {
-        this.req=req;  this.res=res
-    }
-    register () {
-        let req = this.req, res = this.res
-        if (req.method === 'POST') {
-            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
-            req.on("end", function(){
-
-                let dataObject = querystring.parse(decodeURI(reqData));
-
-                if (dataObject['name'] && dataObject['passwd']) {
-                    // 增加用户 并且 将token存入数据库
-                    // 增加用户
-                    db.addUser(dataObject['name'], dataObject['passwd'])
-                    // 返回token 用户id
-                    .then((v)  => {
-                        if (v['insertId']) {
-                            // 创建token
-                            let token = new handleToken({'id': v['insertId']}).create()
-                            res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token, 'id': v['insertId'] }) )
-                        }
-                    })
-                    .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
-                } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
-            })
-        }
-    }
-    // login
-    login () { 
-        let req=this.req,  res=this.res
-        if (req.method === 'POST') {
-            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
-            req.on("end", function(){
-
-                let dataObject = querystring.parse(decodeURI(reqData));
-                if (dataObject['name'] && dataObject['passwd']) {
-                    // 检查用户名 密码是否正常
-                    db.checkPasswd(dataObject['name'], dataObject['passwd'])
-                    .then((v) => { 
-
-                        if (v === 'ok') {
-                            // 获取用户id
-                            db.nameQueryUser(dataObject['name'])
-                            .then((v) => {
-                                // 如果正常则返回token 
-                                let token = new handleToken({'id': v[0]['id']}).create()
-                                res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token, 'id': v[0]['id'] }))
-                            })
-                            .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': 'checkPwd err' })) })
-                        } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'checkPwd err' })) }
-                     })
-                    .catch((v) => {  res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
-                } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }
-            })
-        }
-    }
-    checkLogin () {
-        let req=this.req, res=this.res
-
-        if (req.method === 'POST') {
-            let reqData = ''; res.writeHead(200, jsonHead); req.on('data', function (chunk) { reqData += chunk })
-            req.on("end", function(){
-                // 验证token
-                let reqToken = new handleToken({'req': req}).getReqToken()
-                new handleToken({'token': reqToken}).check()
-                .then((v) => { 
-                    1
-                    res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok' } : { 'r': 0, 'msg': '登录验证失败' }))
-                })
-                .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败2' })) })
-            })
-        }
-    }
-}
-
+// init
+init.Init()
 
 // 对外接口
 // 处理路由请求
 module.exports = {
     // 返回页面
-    fsResDo: (url, res) => { fs.readFile(url, "utf8", (err, data) => {if (err) { return false } else { res.end(data) }})},
+    FsResDo        : (url, res) => { fs.readFile(url, "utf8", (err, data) => {if (err) { return false } else { res.end(data) }})},
     // 注册
-    api_register: (req, res) => { return new userLogin(req, res).register() },
+    Api_register   : (req, res) => { return new method.UserLogin(req, res).register() },
     // 登录
-    api_login: (req, res) => { return new userLogin(req, res).login() },
+    Api_login      : (req, res) => { return new method.UserLogin(req, res).login() },
     // 检查登录
-    api_checklogin: (req, res) => { return new userLogin(req, res).checkLogin() }
+    Api_checklogin : (req, res) => { return new method.UserLogin(req, res).checkLogin() }
     
 }
