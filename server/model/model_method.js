@@ -6,17 +6,12 @@ let handle      = require('./model_handle')
 // 用户登录 注册
 // login register
 class UserLogin {
-    constructor (req, res) {
-        this.req=req;  this.res=res
-    }
-    register () {
-        let req = this.req, res = this.res
+    constructor (req, res) { this.req=req;  this.res=res }
+    register () { let req = this.req, res = this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, def.JsonHead); req.on('data', function (chunk) { reqData += chunk })
             req.on("end", function(){
-
                 let dataObject = querystring.parse(decodeURI(reqData));
-
                 if (dataObject['name'] && dataObject['passwd']) {
                     // 增加用户 并且 将token存入数据库
                     // 增加用户
@@ -34,18 +29,15 @@ class UserLogin {
         }
     }
     // login
-    login () { 
-        let req=this.req,  res=this.res
+    login () { let req=this.req,  res=this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, def.JsonHead); req.on('data', function (chunk) { reqData += chunk })
             req.on("end", function(){
-
                 let dataObject = querystring.parse(decodeURI(reqData));
                 if (dataObject['name'] && dataObject['passwd']) {
                     // 检查用户名 密码是否正常
                     db.CheckPasswd(dataObject['name'], dataObject['passwd'])
                     .then((v) => { 
-
                         if (v === 'ok') {
                             // 获取用户id
                             db.NameQueryUser(dataObject['name'])
@@ -61,19 +53,14 @@ class UserLogin {
             })
         }
     }
-    checkLogin () {
-        let req=this.req, res=this.res
-
+    checkLogin () { let req=this.req, res=this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, def.JsonHead); req.on('data', function (chunk) { reqData += chunk })
             req.on("end", function(){
                 // 验证token
                 let reqToken = new handle.HandleToken({'req': req}).getReqToken()
                 new handle.HandleToken({'token': reqToken}).check()
-                .then((v) => { 
-                    1
-                    res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok' } : { 'r': 0, 'msg': '登录验证失败' }))
-                })
+                .then((v)  => { res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok' } : { 'r': 0, 'msg': '登录验证失败' })) })
                 .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败2' })) })
             })
         }

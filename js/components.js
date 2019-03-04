@@ -43,7 +43,6 @@ window.addEventListener('load', function () {
                 if (uname && upasswd) {
                     ajax('post', '/register', {'name': uname, 'passwd': upasswd})
                     .then((v) => {
-                        console.log('v', v)
                         let queryRes = v['data']
                         if (queryRes['r'] === 1) {
                             // 注册完成
@@ -87,8 +86,8 @@ window.addEventListener('load', function () {
                             <input id="comp_loginModal_passwd" type="password" placeholder="密码" class="bor_ra_2"/>
                         </div>
                         <div class="flex">
-                            <input type="button" onclick="js.${name}.login()"  value="登录" class="bor_ra_2"/>
-                            <input type="button" onclick="js.${name}.register()" value="注册" class="bor_ra_2"/>
+                            <input type="button" onclick="js.${name}.login()"  value="登录" class="bor_ra_2 color_858585"/>
+                            <input type="button" onclick="js.${name}.register()" value="注册" class="bor_ra_2 color_858585"/>
                         </div>
                     </form>
                 </div>
@@ -111,40 +110,27 @@ window.addEventListener('load', function () {
         const js = {
 
         }
-        // const html = `
-        //     <div class="w_100 h_100 over_f bgc_f7f7f7">
-        //         <ul>
-        //             ${ data.listData.reduce((state, ite) => {
-        //                 return state + '<li class="article_list_li flex padd_16px cur_p color_858585">' +
-        //                 '<span class="marg_lr_13px w_33 m_w_140px">主题: ' + ite.title + '</span>' +
-        //                     '<span class="marg_lr_13px">时间: ' + ite.pushTime + '</span>' +
-        //                     '<span class="marg_lr_13px m_w_140px">作者: ' + ite.author + '</span>' +
-        //                 '</li>'
-        //             }, '')}
-        //         </ul>
-        //     </div>
-        // `
         const html = `
-            <div class="w_100 h_100 over_f bgc_f7f7f7">
-                <div class="comp_mainPage_list_top flex w_100 h_50 min_h_280px bor_1_r">
-                    <div class="comp_mainPage_list_top_left w_50 bor_1_r">
+            <div class="pos_r w_100 h_100">
+                <div class="comp_mainPage_list_top flex bor_1_r bgc_f7f7f7">
+                    <div class="comp_mainPage_list_top_left w_50 h_300px bor_1_r">
                     3
                     </div>
-                    <div class="comp_mainPage_list_top_right w_50 flex bor_1_r">
-                        <div class="w_50 min_w_227px bor_1_r">
+                    <div class="comp_mainPage_list_top_right w_50 h_300px flex bor_1_r">
+                        <div class="w_50 h_300px min_w_227px bor_1_r">
                         0
                         </div>
-                        <div class="w_50 bor_1_r">
-                            <div class="w_100 h_50 bor_1_r">
+                        <div class="w_50 h_300px bor_1_r">
+                            <div class="w_100 h_150px bor_1_r">
                             1
                             </div>
-                            <div class="w_100 h_50 bor_1_r">
+                            <div class="w_100 h_150px bor_1_r">
                             2
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="w_100 h_50 min_h_280px bor_1_r">
+                <div class="w_100 h_min_300px bor_1_r bgc_f7f7f7">
                 4
                 </div>
             </div>
@@ -172,7 +158,7 @@ window.addEventListener('load', function () {
         const html = `
             <div class="toyList_right padd_8px w_100 h_100">
                 <div class="bgc_f2f2f2 w_100 h_100">
-                    <div class="${name}_t h_33">
+                    <div class="${name}_t h_33 h_min_200px">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
                             我的成长
                         </div>
@@ -186,12 +172,12 @@ window.addEventListener('load', function () {
                             </ul>
                         </div>
                     </div>
-                    <div class="${name}_m h_33">
+                    <div class="${name}_m h_33 h_min_200px">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
                             我的工具
                         </div>
                     </div>
-                    <div class="${name}_b h_33">
+                    <div class="${name}_b h_33 h_min_200px">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
                             讨论互动
                         </div>

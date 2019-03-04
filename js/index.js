@@ -24,7 +24,6 @@ window.onload = function () {
     setInterval(() => { headerTimeController() }, 1000)
     // 检查登录状态
     checkLoginStatu(1).then((v) => { })
-
 }
 
 console.log(window)
@@ -104,14 +103,7 @@ function appendComp (comp, ele, callback) {
 
 // header 时间
 function headerTimeController () {
-    let date = new Date()
-    let h    = date.getHours()
-    let m    = date.getMinutes(); if (m<10) { m = '0' + m }
-    let s    = date.getSeconds(); if (s<10) { s = '0' + s }
-    let mm   = date.getMonth() + 1
-    let dd   = date.getDate()
-    let week = date.getDay()
-    let w_t  = ''
+    let date=new Date(), h=date.getHours(), m=date.getMinutes(), s=date.getSeconds(), mm=date.getMonth() + 1, dd=date.getDate(), week=date.getDay(), w_t=''; if(m<10){m='0'+m}; if(s<10){s='0'+s}
     switch (week) { case 0: w_t = '日'; break; case 1: w_t = '一'; break; case 2: w_t = '二'; break; case 3: w_t = '三'; break; case 4: w_t = '四'; break; case 5: w_t = '五'; break; case 6: w_t = '六'; break; default: break }
     selectE('#hederTime')[0].innerHTML = h+':'+m+':'+s+' '+mm+'月'+dd+'日'+' 星期'+w_t
 }

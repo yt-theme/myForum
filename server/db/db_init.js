@@ -10,8 +10,7 @@ class dbInit {
                     \`id\` bigint not null auto_increment,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('users table already init'); resolve(v) })
-                .catch((v) => { console.log('users table init err'); reject(v) })
+                .then((v)  => { console.log('users table already init'); resolve(v) }).catch((v) => { console.log('users table init err'); reject(v) })
         })
     }
     // user_info 表初始化
@@ -25,8 +24,7 @@ class dbInit {
                     \`checkin\` smallint(9) default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('users_info table already init'); resolve(v) })
-                .catch((v) => { console.log('users_info table init err'); reject(v) })
+                .then((v)  => { console.log('users_info table already init'); resolve(v) }).catch((v) => { console.log('users_info table init err'); reject(v) })
         })
     }
     // forum 版块 表初始化
@@ -40,8 +38,7 @@ class dbInit {
                     \`create_time\` datetime default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('forum table already init'); resolve(v) })
-                .catch((v) => { console.log('forum table init err'); reject(v) })
+                .then((v)  => { console.log('forum table already init'); resolve(v) }).catch((v) => { console.log('forum table init err'); reject(v) })
         }) 
     }
     // article_topic 主题 表初始化
@@ -56,8 +53,7 @@ class dbInit {
                     \`create_time\` datetime default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('article table already init'); resolve(v) })
-                .catch((v) => { console.log('article table init err'); reject(v) })
+                .then((v)  => { console.log('article table already init'); resolve(v) }).catch((v) => { console.log('article table init err'); reject(v) })
         }) 
     }
     // article_content 主题内容 表初始化
@@ -70,11 +66,10 @@ class dbInit {
                     \`content\` longtext default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('article_content table already init'); resolve(v) })
-                .catch((v) => { console.log('article_content table init err'); reject(v) })
+                .then((v)  => { console.log('article_content table already init'); resolve(v) }).catch((v) => { console.log('article_content table init err'); reject(v) })
         }) 
     }
-    // article_reply 主题内容 表初始化
+    // article_reply 主题评论 表初始化
     dbInit_articleReply_table () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `create table if not exists \`article_reply\` (
@@ -85,8 +80,25 @@ class dbInit {
                     \`content\` longtext default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
-                .then((v)  => { console.log('article_reply table already init'); resolve(v) })
-                .catch((v) => { console.log('article_reply table init err'); reject(v) })
+                .then((v)  => { console.log('article_reply table already init'); resolve(v) }).catch((v) => { console.log('article_reply table init err'); reject(v) })
+        }) 
+    }
+
+    // toy 表初始化
+    // toy 我的成长 我的工具 互动讨论
+    // type => "1" 我的成长 "2" 我的工具 "3" 互动讨论
+    dbInit_toy_table () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `create table if not exists \`toy\` (
+                    \`id\` bigint not null auto_increment,
+                    \`type\` char(1) default 1,
+                    \`title\` char default null,
+                    \`link\` text default null,
+                    \`bgc\` char(7) default null,
+                    \`bgi\` text default null,
+                    primary key (\`id\`)
+                ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
+                .then((v)  => { console.log('toy table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
         }) 
     }
 }
@@ -101,6 +113,8 @@ let Db_init = () => {
     new dbInit().dbInit_article_table().then((v) => { }).catch((v) => { })
     new dbInit().dbInit_articleContent_table().then((v) => { }).catch((v) => { })
     new dbInit().dbInit_articleReply_table().then((v) => { }).catch((v) => { })
+    // toy表初始化
+    new dbInit().dbInit_toy_table().then((v) => { }).catch((v) => { })
 }
 
 module.exports = {

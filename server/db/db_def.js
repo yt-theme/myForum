@@ -6,6 +6,7 @@ var mysqlPool = mysql.createPool({
     password: 'root',
     database: 'forum'
 })
+
 // query mysql
 function SqlQ (sqlObj) {
     return new Promise ((resolve, reject) => {

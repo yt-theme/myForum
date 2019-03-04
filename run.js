@@ -13,6 +13,7 @@ server.on('request', function (req, res) {
         case '/js/router.js'     : model.FsResDo("./js/router.js", res); break
         case '/js/components.js' : model.FsResDo("./js/components.js", res); break
         case '/css/public.css'   : model.FsResDo("./css/public.css", res); break
+        case '/favicon.ico'   : model.FsResDo("./favicon.ico", res); break
 
 
         // 注册
