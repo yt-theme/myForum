@@ -1,6 +1,6 @@
 var fs     = require('fs')
-let method = require('./model_method')
-let init   = require('./model_init')
+let method = require('./method/method.js')
+let init   = require('./init/init.js')
 
 // init
 init.Init()

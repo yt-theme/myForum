@@ -1,5 +1,5 @@
-let init   = require("./db_init")
-let method = require("./db_method")
+let init   = require("./init/init.js")
+let method = require("./method/method.js")
 
 // 对外方法
 module.exports = {
