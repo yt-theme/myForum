@@ -1,6 +1,13 @@
-let def = require("../def/def.js")
+let def   = require("../def/def.js")
+let db    = require("../db")
+let model = require("../../model/model")
 // 数据库 init
 class dbInit {
+    constructor (obj) {
+        if (obj) {
+            this.path = obj.path
+        }
+    }
     // users 表初始化
     dbInit_users_table () {
         return new Promise ((resolve, reject) => {
@@ -13,14 +20,16 @@ class dbInit {
                 .then((v)  => { console.log('users table already init'); resolve(v) }).catch((v) => { console.log('users table init err'); reject(v) })
         })
     }
-    // user_info 表初始化
+    // users_info 表初始化
     dbInit_usersInfo_table () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `create table if not exists \`users_info\` (
                     \`id\` bigint not null auto_increment,
+                    \`user_id\` bigint not null,
                     \`name\` varchar(30) default null unique,
                     \`logo\` varchar(256) default null,
                     \`phone\` varchar(11) default null,
+                    \`toy\` varchar(1024) default null,
                     \`checkin\` smallint(9) default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
@@ -92,7 +101,7 @@ class dbInit {
             def.SqlQ({ sql: `create table if not exists \`toy\` (
                     \`id\` bigint not null auto_increment,
                     \`type\` char(1) default 1,
-                    \`title\` char default null,
+                    \`title\` char(14) default null,
                     \`link\` text default null,
                     \`bgc\` char(7) default null,
                     \`bgi\` text default null,
@@ -104,17 +113,19 @@ class dbInit {
 }
 
 // 数据表初始化
-let Db_init = () => {
-    // 用户表初始化
-    new dbInit().dbInit_users_table().then((v) => { }).catch((v) => { })
-    new dbInit().dbInit_usersInfo_table().then((v) => { }).catch((v) => { })
-    // 论坛表初始化
-    new dbInit().dbInit_forum_table().then((v) => { }).catch((v) => { })
-    new dbInit().dbInit_article_table().then((v) => { }).catch((v) => { })
-    new dbInit().dbInit_articleContent_table().then((v) => { }).catch((v) => { })
-    new dbInit().dbInit_articleReply_table().then((v) => { }).catch((v) => { })
-    // toy表初始化
-    new dbInit().dbInit_toy_table().then((v) => { }).catch((v) => { })
+function Db_init () {
+    return new Promise ((resolve, reject) => {
+        // 用户表初始化
+        new dbInit().dbInit_users_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_usersInfo_table().then((v) => { }).catch((v) => { })
+        // 论坛表初始化
+        new dbInit().dbInit_forum_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_article_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_articleContent_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_articleReply_table().then((v) => { }).catch((v) => { })
+        // toy表初始化
+        new dbInit().dbInit_toy_table().then((v) => { resolve(v) }).catch((v) => {  })
+    })
 }
 
 module.exports = {

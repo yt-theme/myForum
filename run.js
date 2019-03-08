@@ -8,6 +8,9 @@ server.on('request', function (req, res) {
     console.log(req.url)
     switch (req.url) {
 
+        // 测试
+        case '/test' : model.ImportXlsx_toy("./import_toy.xlsx")
+
         case '/'                 : model.FsResDo("./index.html", res); break
         case '/js/index.js'      : model.FsResDo("./js/index.js", res); break
         case '/js/router.js'     : model.FsResDo("./js/router.js", res); break

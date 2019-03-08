@@ -1,17 +1,41 @@
 let xlsx = require("node-xlsx")
 
-class Main {
+// database <= => xlsx
+class Handle_xlsx {
     constructor (obj) {
         this.path = obj.path
+        // this.locationDB = {
+        //     mysql: {
+        //         host: 'localhost',
+        //         user: 'root',
+        //         password: 'root',
+        //         database: 'forum',
+        //         port: '3306'                
+        //     }
+        // }
     }
-    query () {
+    query () { let path=this.path
         return new Promise ((resolve, reject) => {
-            let obj = xlsx.parse(path)
-            resolve(obj)
+            resolve(xlsx.parse(path))
+        })
+    }
+    import () {
+        return new Promise ((resolve, reject) => {
+
+        })
+    }
+    importXlsx () {
+        return new Promise ((resolve, reject) => {
+           
+        })
+    }
+    export () {
+        return new Promise ((resolve, reject) => {
+
         })
     }
 }
 
 module.exports = {
-    Main : Main
+    Handle_xlsx : Handle_xlsx
 }
