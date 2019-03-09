@@ -33,6 +33,10 @@ class Handle_usersInfo_table {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `select * from users_info where user_id = ?`, values: [ this.user_id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
+    queryToy () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `select toy from users_info where user_id = ?`, values: [ this.user_id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+    }
 }
 
 module.exports = {

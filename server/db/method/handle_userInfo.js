@@ -32,6 +32,11 @@ class HandleUserInfo {
         return new Promise ((resolve, reject) => {
             new handle.Handle_usersInfo_table({ "user_id": user_id }).query().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
     }
+
+    queryToy () { let user_id = this.user_id
+        return new Promise ((resolve, reject) => {
+            new handle.Handle_usersInfo_table({ "user_id": user_id }).queryToy().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
+    }
 }
 
 module.exports = {

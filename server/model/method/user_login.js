@@ -7,6 +7,12 @@ let handle      = require('../handle/handle.js')
 // login register
 class UserLogin {
     constructor (req, res) { this.req=req;  this.res=res }
+
+    // 定义 添加 toy 到 users_info 表的方法
+    addToyToUsersInfo () {
+
+    }
+
     register () { let req = this.req, res = this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, def.JsonHead); req.on('data', function (chunk) { reqData += chunk })
@@ -21,7 +27,47 @@ class UserLogin {
                         if (v['insertId']) {
                             // 创建token
                             let token = new handle.HandleToken({'id': v['insertId']}).create()
-                            res.end(JSON.stringify({ 'r': 1, 'msg': 'ok', 'token': token, 'id': v['insertId'] }) ) }
+
+                            // 用户添加 toy
+                            // 用户默认有所有 toy 功能
+                            // 0. 插入 用户信息到 users_info 表
+                            // 1. 添加所有 toy 功能到 users_info 表
+                            // 2. 将用户 toy 字段对应的 toy 表中的项目返回
+
+                            // 插入之前检索 toy
+                            db.QueryToyAll()
+                            .then((v1) => {
+                                let toyId_str = "", toy_arr = []
+                                v1.forEach(ite => { toy_arr.push(ite["id"]) })
+                                toyId_str = toy_arr.join(',')
+                                console.log("all toy id =>", toyId_str)
+
+                                // 插入 users_info
+                                db.InsertUserInfo({
+                                    "user_id": v['insertId'],
+                                    "name":    dataObject['name'],
+                                    "logo":    '',
+                                    "phone":   '',
+                                    "toy":     toyId_str,
+                                    "checkin": 1,})
+                                .then((v2) => {
+                                    console.log("users_info insert ok =>", v2)
+                                    
+                                    // 查询用户拥有的 toy id 并按返回
+                                    new handle.CheckoutUserToy(v['insertId']).queryToyList()
+
+                                    // 返回数据
+                                    res.end(JSON.stringify({ 
+                                        'r': 1,
+                                        'msg': 'ok',
+                                        'token': token,
+                                        'id': v['insertId'],
+                                        'toy': toy_arr
+                                    }) )
+                                }).catch((v2) => { console.log("users_info insert err =>", v2) })
+
+                            }).catch((v1) => { console.log(v1) })
+                        }
                     })
                     .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': v })) })
                 } else { res.end(JSON.stringify({ 'r': 0, 'msg': 'name | passwd缺少参数' })) }

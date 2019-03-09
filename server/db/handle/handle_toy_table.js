@@ -29,9 +29,20 @@ class Handle_toy_table {
             def.SqlQ({ sql: `update toy set type = ?, title = ?, link = ?, bgc = ?, bgi = ? where id=?`, 
                 values: [ this.type, this.title, this.link, this.bgc, this.bgi, this.id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
+    // 按 id type 查询
     query () {
         return new Promise ((resolve, reject) => {
-            def.SqlQ({ sql: `select * from toy where id = ?, type=?`, values: [ this.id, this.type ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+            def.SqlQ({ sql: `select * from toy where id = ? or type=?`, values: [ this.id, this.type ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+    }
+    // 查询所有
+    queryAll () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `select * from toy`, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+    }
+    // 检索所有 id
+    queryAllId () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `select id from toy`, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
 }
 

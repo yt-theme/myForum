@@ -1,7 +1,7 @@
-let handle_token = require("./handle_token")
-let handle_user_addToy = require("./handle_user_addToy")
+let handle_token     = require("./handle_token")
+let checkout_userToy = require("./checkout_userToy")
 
 module.exports = {
-    HandleToken : handle_token.HandleToken,
-    UserAddToy  : handle_user_addToy.UserAddToy
+    HandleToken     : handle_token.HandleToken,
+    CheckoutUserToy : checkout_userToy.CheckoutUserToy
 }
