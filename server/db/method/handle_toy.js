@@ -3,6 +3,7 @@ let handle = require("../handle/handle")
 class HandleToy {
     constructor (obj) {
         if (obj) {
+            this.arr  = obj.arr || ""
             this.id   = obj.id || ""
             this.type = obj.type || ""
         }
@@ -12,6 +13,11 @@ class HandleToy {
     query () { let id=this.id,  type=this.type
         return new Promise ((resolve, reject) => {
             new handle.Handle_toy_table({"id": id, "type": type}).query().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
+    }
+    // 查询多条
+    queryList () { let arr=this.arr
+        return new Promise ((resolve, reject) => {
+            new handle.Handle_toy_table({"arr": arr}).queryList().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
     }
     // 查询所有
     queryAll () {

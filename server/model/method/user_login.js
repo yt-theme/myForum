@@ -47,22 +47,17 @@ class UserLogin {
                                     "user_id": v['insertId'],
                                     "name":    dataObject['name'],
                                     "logo":    '',
-                                    "phone":   '',
+                                    "phone":   "00000000000",
                                     "toy":     toyId_str,
-                                    "checkin": 1,})
+                                    "checkin": 1 })
                                 .then((v2) => {
-                                    console.log("users_info insert ok =>", v2)
-                                    
-                                    // 查询用户拥有的 toy id 并按返回
-                                    new handle.CheckoutUserToy(v['insertId']).queryToyList()
-
+                                    console.log("user_id", v['insertId'])
                                     // 返回数据
                                     res.end(JSON.stringify({ 
                                         'r': 1,
                                         'msg': 'ok',
                                         'token': token,
                                         'id': v['insertId'],
-                                        'toy': toy_arr
                                     }) )
                                 }).catch((v2) => { console.log("users_info insert err =>", v2) })
 
@@ -106,7 +101,14 @@ class UserLogin {
                 // 验证token
                 let reqToken = new handle.HandleToken({'req': req}).getReqToken()
                 new handle.HandleToken({'token': reqToken}).check()
-                .then((v)  => { res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok' } : { 'r': 0, 'msg': '登录验证失败' })) })
+                .then((v)  => {
+                    // 返回用户toy
+                    // 查询用户拥有的 toy
+                    new handle.CheckoutUserToy(v).queryToyList()
+                    .then((toyArr) => {
+                        res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok', 'toy': toyArr } : { 'r': 0, 'msg': '登录验证失败' }))
+                    })
+                })
                 .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败2' })) })
             })
         }

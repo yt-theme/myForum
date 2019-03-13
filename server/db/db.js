@@ -52,9 +52,11 @@ module.exports = {
     toy表                                                                   
   #########################*/
     // 查询 toy => id or type
-    QueryToy       : (id, type) => { return new method.HandleToy({"id": id, "type": type}).query() },
+    QueryToy      : (id, type) => { return new method.HandleToy({"id": id, "type": type}).query() },
+    // 查询多条
+    QueryToyList  : (arr) => { return new method.HandleToy({"arr": arr}).queryList() },
     // 查询 toy 所有内容
-    QueryToyAll    : () => { return new method.HandleToy().queryAll() },
+    QueryToyAll   : () => { return new method.HandleToy().queryAll() },
     // 检索 toy 所有 id
-    QueryToyAllId    : () => { return new method.HandleToy().queryAllId() }
+    QueryToyAllId : () => { return new method.HandleToy().queryAllId() }
 }

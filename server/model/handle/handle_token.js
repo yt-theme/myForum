@@ -31,7 +31,7 @@ class HandleToken {
                 // 检查用户是否存在
                 db.QueryUser(id)
                 .then((v) => {
-                    if (v[0]['id'] === id) { if (checkResult && iat<=exp) { resolve(true) } else { reject(false) } }
+                    if (v[0]['id'] === id) { if (checkResult && iat<=exp) { resolve(id) } else { reject(false) } }
                     else { reject(false) } })
                 .catch((v) => { reject(false) })
             } catch { reject(false) }

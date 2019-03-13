@@ -11,6 +11,7 @@ var mysqlPool = mysql.createPool({
 function SqlQ (sqlObj) {
     return new Promise ((resolve, reject) => {
         mysqlPool.getConnection(function(err, connection) {
+
             if (err) { reject('err'); return false }
             connection.query({ 'sql': sqlObj.sql, 'values': sqlObj.values }, (err, results) => {
                 connection.release()

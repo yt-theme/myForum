@@ -16,17 +16,9 @@ class CheckoutUserToy {
         return new Promise ((resolve, reject) => {
             // 查询用户拥有 toy id
             this.queryIdList().then((v) => {
-                let toyId_list = v[0]['toy'].split(',')
+                // let toyId_list = v[0]['toy'].split(',')
                 // 将每个 toy id 对应内容取出
-                let sql = `
-
-                `
-                db_def.SqlQ({
-                    sql: sql,
-                    value: []
-                })
-                .then((v1) => {  }).catch((v1) => {  })
-
+                db.QueryToyList(v[0]['toy']).then((v1) => { resolve(v1) }).catch((v1) => { reject(v1) })
             }).catch((v) => { reject(v) })
         })
     }

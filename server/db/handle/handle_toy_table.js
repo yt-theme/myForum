@@ -6,6 +6,7 @@ let def = require("../def/def.js")
 class Handle_toy_table {
     constructor (obj) {
         if (obj) {
+            this.arr   = obj.arr
             this.sql   = obj.sql
             this.id    = obj.id
             this.type  = obj.type
@@ -33,6 +34,11 @@ class Handle_toy_table {
     query () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `select * from toy where id = ? or type=?`, values: [ this.id, this.type ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+    }
+    // 查询多条结果
+    queryList () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `select * from toy where id in (${this.arr})`, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
     // 查询所有
     queryAll () {
