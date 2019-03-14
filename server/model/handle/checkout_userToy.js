@@ -1,5 +1,4 @@
 let db = require("../../db/db")
-let db_def = require("../../db/def/def")
 
 class CheckoutUserToy {
     constructor (user_id) {

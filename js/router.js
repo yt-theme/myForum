@@ -15,10 +15,14 @@ window.addEventListener('hashchange', function () {
 r.route("/", (routePath) => {
     destorySeedCompAll()
     mainPageShow_list()
+    // toy 列表
     mainPageShow_toy()
+    js["comp_mainPage_toy"].init(userToyList["data"])
 })
 
 r.route("/electric", (routePath) => { 
     destorySeedCompAll()
+    // toy 列表
     mainPageShow_toy()
+    js["comp_mainPage_toy"].init(userToyList["data"])
  })

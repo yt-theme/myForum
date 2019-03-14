@@ -108,7 +108,7 @@ window.addEventListener('load', function () {
                 
         }
         const js = {
-
+            
         }
         const html = `
             <div class="pos_r w_100 h_100">
@@ -147,39 +147,52 @@ window.addEventListener('load', function () {
     comp_mainPage_toy = (htmVarArr) => {
         const name = 'comp_mainPage_toy'
         const data = {
-            listData_growUp: [
-                {'title': 'abc'},
-                {'title': 'def'}
-            ]
+            
         }
         const js = {
+            // userToyList 赋值
+            init (v) {
+                console.log("toyList", v)
+                // 分离 我的成长 我的工具 讨论互动 列表
+                let myGrowList=[],  myToolList=[],  discussList=[]
+                v.forEach(ite => { switch (ite["type"]) { case "1": myGrowList.push(ite); break; case "2": myToolList.push(ite); break; case "3": discussList.push(ite); break }});
 
+                let createToyList = (id, arr) => {
+                    selectE(id)[0].innerHTML =  arr.reduce((state, ite) => {
+                        return state + '<li class="pos_r toy_style cur_p color_858585 text_cent">' +
+                            '<div class="w_100 h_100">logo</div>' +
+                            '<span class="pos_a l_0 b_0 w_100 padd_2px"><nobr>' + ite.title + '</nobr></span>' +
+                        '</li>'
+                    }, '')
+                }
+
+                // 我的成长 列表生成
+                createToyList('#toyList_right_myGrow', myGrowList)
+                // 我的工具 列表生成
+                createToyList('#toyList_right_myTool', myToolList)
+                // 讨论互动 列表生成
+                createToyList('#toyList_right_discuss', discussList)
+            }
         }
         const html = `
             <div class="toyList_right padd_8px w_100 h_100">
-                <div class="bgc_f2f2f2 w_100 h_100">
-                    <div class="${name}_t h_33 h_min_200px">
-                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
-                            我的成长
-                        </div>
-                        <div>
-                            <ul>
-                                ${ data.listData_growUp.reduce((state, ite) => {
-                                    return state + '<li class="article_list_li flex padd_16px cur_p color_858585">' +
-                                        '<span class="marg_lr_13px w_33 m_w_140px">' + ite.title + '</span>' +
-                                    '</li>'
-                                }, '')}
-                            </ul>
+                <div class="bgc_f2f2f2 w_100">
+                    <div class="${name}_t">
+                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">我的成长</div>
+                        <div class="over_f padd_16px">
+                            <ul id="toyList_right_myGrow"></ul>
                         </div>
                     </div>
-                    <div class="${name}_m h_33 h_min_200px">
-                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
-                            我的工具
+                    <div class="${name}_m">
+                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">我的工具</div>
+                        <div class="over_f padd_16px">
+                            <ul id="toyList_right_myTool"></ul>
                         </div>
                     </div>
-                    <div class="${name}_b h_33 h_min_200px">
-                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">
-                            讨论互动
+                    <div class="${name}_b">
+                        <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">讨论互动</div>
+                        <div class="over_f padd_16px">
+                            <ul id="toyList_right_discuss"></ul>
                         </div>
                     </div>
                 </div>

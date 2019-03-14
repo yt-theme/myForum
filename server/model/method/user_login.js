@@ -8,11 +8,6 @@ let handle      = require('../handle/handle.js')
 class UserLogin {
     constructor (req, res) { this.req=req;  this.res=res }
 
-    // 定义 添加 toy 到 users_info 表的方法
-    addToyToUsersInfo () {
-
-    }
-
     register () { let req = this.req, res = this.res
         if (req.method === 'POST') {
             let reqData = ''; res.writeHead(200, def.JsonHead); req.on('data', function (chunk) { reqData += chunk })
@@ -106,8 +101,9 @@ class UserLogin {
                     // 查询用户拥有的 toy
                     new handle.CheckoutUserToy(v).queryToyList()
                     .then((toyArr) => {
-                        res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok', 'toy': toyArr } : { 'r': 0, 'msg': '登录验证失败' }))
+                        res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok', 'toy': toyArr || [] } : { 'r': 0, 'msg': '登录验证失败' }))
                     })
+                    .catch((v1) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败' })) })
                 })
                 .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败2' })) })
             })

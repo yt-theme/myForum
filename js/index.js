@@ -4,6 +4,14 @@ let host = 'localhost'
 let that = this
 // 存储组件
 let appendCompDat = []
+// 存储 userToyList
+let userToyList = new Proxy({"data": []}, {
+    set: function (target, key, value, receiver) {
+        // 回调 toy 后续方法
+        js["comp_mainPage_toy"].init(value)
+        return Reflect.set(target, key, value, receiver)
+    }
+})
 window.onload = function () {
     console.log('hash', window.location.hash)
     // 定义组件方法保存
@@ -92,7 +100,7 @@ function appendComp (comp, ele, callback) {
         selectE('.' + comp['name'])[0].innerHTML = comp['html']
         that.js[comp['name']] = comp['js']
         that.data[comp['name']] = comp['data']
-        console.log('data', that.data)
+        // console.log('data', that.data)
 
         // 添加销毁方法
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
@@ -159,8 +167,12 @@ function checkLoginStatu (mode) {
                 ajax('post', '/checklogin', {})
                 .then((v)  => {
                     let queryRes = v['data']
-                    if (queryRes.r === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
+                    if (queryRes["r"] === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
                     else { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
+
+                    // 用户toy列表 获取
+                    userToyList["data"] = queryRes["toy"]
+
                 })
                 .catch((v) => { console.log('checktoken er', v); resolve(false) })
             } else { resolve(true) }
@@ -206,6 +218,7 @@ function headerSelectForum_change (_this_) {
         }
     }
 }
+
 // ############### 组件事件 #########
 // (1) 注册组件种子
 // 组件种子初始化为 none
@@ -226,7 +239,7 @@ function clickLogo () { changeRouter('/') }
 // 注销
 function logout () { new handleLocalStorage().clear(); checkLoginStatu(0).then((v) => { messagePop('退出账号', '', () => { refresh() }) }) }
 
-// mainPage
+// mainPage component
 // left
 function mainPageShow_list () { appendComp(comp_mainPage_list(), 'articleList') }
 // right
