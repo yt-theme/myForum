@@ -102,9 +102,9 @@ class dbInit {
                     \`id\` bigint not null auto_increment,
                     \`type\` char(1) default 1,
                     \`title\` char(14) default null,
-                    \`link\` text default null,
+                    \`link\` TEXT default null,
                     \`bgc\` char(7) default null,
-                    \`bgi\` text default null,
+                    \`bgi\` TEXT default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
                 .then((v)  => { console.log('toy table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
@@ -116,15 +116,15 @@ class dbInit {
 function Db_init () {
     return new Promise ((resolve, reject) => {
         // 用户表初始化
-        new dbInit().dbInit_users_table().then((v) => { }).catch((v) => { })
-        new dbInit().dbInit_usersInfo_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_users_table()
+        new dbInit().dbInit_usersInfo_table()
         // 论坛表初始化
-        new dbInit().dbInit_forum_table().then((v) => { }).catch((v) => { })
-        new dbInit().dbInit_article_table().then((v) => { }).catch((v) => { })
-        new dbInit().dbInit_articleContent_table().then((v) => { }).catch((v) => { })
-        new dbInit().dbInit_articleReply_table().then((v) => { }).catch((v) => { })
+        new dbInit().dbInit_forum_table()
+        new dbInit().dbInit_article_table()
+        new dbInit().dbInit_articleContent_table()
+        new dbInit().dbInit_articleReply_table()
         // toy表初始化
-        new dbInit().dbInit_toy_table().then((v) => { resolve(v) }).catch((v) => {  })
+        new dbInit().dbInit_toy_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
     })
 }
 

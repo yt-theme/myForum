@@ -8,6 +8,7 @@ init.Init()
 // xlsx import table
 // toy
 .then((v) => { new method.ImportXlsxToTable({"path": def.Toy_xlsx_path}).toy() })
+.catch((v) => { console.log('dbInit err toy =>', v) })
 
 // 对外接口
 // 处理路由请求

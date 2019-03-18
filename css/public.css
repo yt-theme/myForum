@@ -7,6 +7,8 @@
 .b_0 { bottom: 0; }
 .r_0 { right: 0; }
 .l_0 { left: 0; }
+.none { display: none; }
+.block { display: block; }
 .flex { display: flex; }
 .flex_wrap { flex-wrap: wrap; }
 .flex_just_betw { justify-content: space-between; }
@@ -51,6 +53,7 @@
 .padd_2px { padding: 2px; }
 .padd_tb_8px { padding-top: 8px; padding-bottom: 8px; }
 .padd_16px { padding: 16px; }
+.padd_tb_16px { padding-top: 16px; padding-bottom: 16px; }
 .marg_13px { margin: 13px; }
 .marg_tb_4px { margin-top: 4px; margin-bottom: 4px; }
 .marg_tb_8px { margin-top: 8px; margin-bottom: 8px; }
@@ -137,9 +140,8 @@
 }
 .toy_style {
     float: left;
-    width: 70px;
-    height: 70px;
-    border: 2px solid #c9d6e0;
+    width: 74px;
+    height: 74px;
     border-radius: 3px;
     margin: 5px;
     list-style: none;

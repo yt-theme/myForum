@@ -4,7 +4,7 @@ let method = require("./method/method.js")
 // 对外方法
 module.exports = {
     // 数据库初始化
-    Init          : () => { return new Promise ((resolve, reject) => { init.Db_init().then((v) => { resolve(v) }) })},
+    Init          : () => { return new Promise ((resolve, reject) => { init.Db_init().then((v) => { resolve(v) }).catch((v) => { reject(v) } ) })},
 
 /*#########################
     xlsx导入

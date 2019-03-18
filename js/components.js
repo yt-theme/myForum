@@ -159,9 +159,11 @@ window.addEventListener('load', function () {
 
                 let createToyList = (id, arr) => {
                     selectE(id)[0].innerHTML =  arr.reduce((state, ite) => {
-                        return state + '<li class="pos_r toy_style cur_p color_858585 text_cent">' +
-                            '<div class="w_100 h_100">logo</div>' +
-                            '<span class="pos_a l_0 b_0 w_100 padd_2px"><nobr>' + ite.title + '</nobr></span>' +
+                        return state + '<li style="background-color: ' + ite.bgc + '" title="' + ite.title + '" class="pos_r toy_style cur_p color_858585 text_cent">' +
+                            '<div class="block w_100 h_100">' +
+                                '<embed class="none" src="data:image/svg+xml;utf8,' + atob(ite.bgi) + '"/>' +
+                            '</div>' +
+                            // '<span class="pos_a l_0 b_0 w_100 padd_2px"><nobr>' +  + '</nobr></span>' +
                         '</li>'
                     }, '')
                 }
@@ -179,19 +181,19 @@ window.addEventListener('load', function () {
                 <div class="bgc_f2f2f2 w_100">
                     <div class="${name}_t">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">我的成长</div>
-                        <div class="over_f padd_16px">
+                        <div class="over_f padd_8px padd_tb_16px">
                             <ul id="toyList_right_myGrow"></ul>
                         </div>
                     </div>
                     <div class="${name}_m">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">我的工具</div>
-                        <div class="over_f padd_16px">
+                        <div class="over_f padd_8px padd_tb_16px">
                             <ul id="toyList_right_myTool"></ul>
                         </div>
                     </div>
                     <div class="${name}_b">
                         <div class="padd_8px bgc bgc_c9d6e0 color_4788bc">讨论互动</div>
-                        <div class="over_f padd_16px">
+                        <div class="over_f padd_8px padd_tb_16px">
                             <ul id="toyList_right_discuss"></ul>
                         </div>
                     </div>
