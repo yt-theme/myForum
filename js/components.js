@@ -108,7 +108,14 @@ window.addEventListener('load', function () {
                 
         }
         const js = {
-            
+            init () {
+                // 获取地理位置
+                ajax('get', 'http://pv.sohu.com/cityjson')
+                .then((v) => {
+                    alert(1)
+                })
+                
+            },
         }
         const html = `
             <div class="pos_r w_100 h_100">
@@ -152,7 +159,6 @@ window.addEventListener('load', function () {
         const js = {
             // userToyList 赋值
             init (v) {
-                console.log("toyList", v)
                 // 分离 我的成长 我的工具 讨论互动 列表
                 let myGrowList=[],  myToolList=[],  discussList=[]
                 v.forEach(ite => { switch (ite["type"]) { case "1": myGrowList.push(ite); break; case "2": myToolList.push(ite); break; case "3": discussList.push(ite); break }});

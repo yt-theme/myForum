@@ -14,7 +14,9 @@ window.addEventListener('hashchange', function () {
 // mainPage
 r.route("/", (routePath) => {
     destorySeedCompAll()
+    // 首页
     mainPageShow_list()
+    js["comp_mainPage_list"].init()
     // toy 列表
     mainPageShow_toy()
     js["comp_mainPage_toy"].init(userToyList["data"])

@@ -110,6 +110,23 @@ class dbInit {
                 .then((v)  => { console.log('toy table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
         }) 
     }
+
+    // home_hot 表初始化 首页 热点置顶帖
+    dbInit_homeHot_table () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `create table if not exists \`home_hot\` (
+                    \`id\` bigint not null auto_increment,
+                    \`article_id\` bigint not null,
+                    \`type\` char(1) default 1,
+                    \`author\` varchar(30) default null,
+                    \`title\` char(14) default null,
+                    \`link\` TEXT default null,
+                    \`tag\` char(1) default null,
+                    primary key (\`id\`)
+                ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
+                .then((v)  => { console.log('home_hot table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
+        }) 
+    }
 }
 
 // 数据表初始化
@@ -125,6 +142,8 @@ function Db_init () {
         new dbInit().dbInit_articleReply_table()
         // toy表初始化
         new dbInit().dbInit_toy_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
+        // 首页 home_hot 表初始化
+        new dbInit().dbInit_homeHot_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
     })
 }
 

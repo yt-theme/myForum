@@ -38,7 +38,6 @@ class ImportXlsx {
                 resolve(v)
 
                 let sql = `insert into toy ( ${fieldName} ) values ${ fieldValue.reduce((prev, cur, index, arr) => {
-                    console.log("cur", cur, index, fieldValue)
                     let tmpTxt = cur[0]+','+cur[1]+',"'+cur[2]+'","'+cur[3]+'","'+cur[4]+'","'+cur[5]+'"'
                     if (index === fieldValue.length - 1) { return prev + '(' + tmpTxt + ');' } else { return prev + '(' + tmpTxt + '),' } }, '')}
                     `
