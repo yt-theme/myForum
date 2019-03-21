@@ -25,7 +25,8 @@ class dbInit {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `create table if not exists \`users_info\` (
                     \`id\` bigint not null auto_increment,
-                    \`user_id\` bigint not null,
+                    \`user_id\` bigint default null,
+                    \`create_time\` bigint not null,
                     \`name\` varchar(30) default null unique,
                     \`logo\` varchar(256) default null,
                     \`phone\` varchar(11) default null,

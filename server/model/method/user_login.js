@@ -40,6 +40,7 @@ class UserLogin {
                                 // 插入 users_info
                                 db.InsertUserInfo({
                                     "user_id": v['insertId'],
+                                    "create_time": Date.parse(new Date()).toString(),
                                     "name":    dataObject['name'],
                                     "logo":    '',
                                     "phone":   "00000000000",
@@ -97,13 +98,28 @@ class UserLogin {
                 let reqToken = new handle.HandleToken({'req': req}).getReqToken()
                 new handle.HandleToken({'token': reqToken}).check()
                 .then((v)  => {
+
+                    // 返回用户 age
+                    let promise_age = new Promise((reoslve, reject) => {
+                        new handle.HandleUserCreateTime({ "user_id": v }).queryDate()
+                        .then((age) => { reoslve(age) }).catch((err) => { reject(err) })
+                    })
+                    
+
                     // 返回用户toy
                     // 查询用户拥有的 toy
-                    new handle.CheckoutUserToy(v).queryToyList()
-                    .then((toyArr) => {
-                        res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok', 'toy': toyArr || [] } : { 'r': 0, 'msg': '登录验证失败' }))
+                    let promise_toy = new Promise((resolve, reject) => {
+                        new handle.CheckoutUserToy(v).queryToyList()
+                        .then((toyArr) => {
+                            resolve(toyArr)
+                        })
+                        .catch((v1) => { reject(v1) })
                     })
-                    .catch((v1) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败' })) })
+
+                    Promise.all([promise_age, promise_toy]).then((valueArr) => {
+                        let age=valueArr[0],  toyArr=valueArr[1]
+                        res.end(JSON.stringify(v ? { 'r': 1, 'msg': 'ok', 'toy': toyArr || [], 'age': age } : { 'r': 0, 'msg': '登录验证失败' }))
+                    }).catch((err1) => { console.log("checkLogin err =>", err1); res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败' })) })
                 })
                 .catch((v) => { res.end(JSON.stringify({ 'r': 0, 'msg': '登录验证失败2' })) })
             })

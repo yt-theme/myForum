@@ -2,18 +2,19 @@ let handle = require("../handle/handle")
 
 class HandleUserInfo {
     constructor (obj) {
-        this.user_id = obj.user_id
-        this.name    = obj.name
-        this.logo    = obj.logo
-        this.toy     = obj.toy
-        this.phone   = obj.phone
-        this.checkin = obj.checkin
+        this.user_id     = obj.user_id
+        this.create_time = obj.create_time
+        this.name        = obj.name
+        this.logo        = obj.logo
+        this.toy         = obj.toy
+        this.phone       = obj.phone
+        this.checkin     = obj.checkin
     }
 
     // 添加 users_info 内容
-    insert () { let user_id=this.user_id,  name=this.name,  logo=this.logo,  phone=this.phone,  toy=this.toy,  checkin=this.checkin
+    insert () { let user_id=this.user_id, create_time=this.create_time,  name=this.name,  logo=this.logo,  phone=this.phone,  toy=this.toy,  checkin=this.checkin
         return new Promise ((resolve, reject) => {
-            new handle.Handle_usersInfo_table({ "user_id": user_id, "name": name, "logo": logo, "phone": phone, "toy": toy, "checkin": checkin }).insert().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
+            new handle.Handle_usersInfo_table({ "user_id": user_id, "create_time": create_time, "name": name, "logo": logo, "phone": phone, "toy": toy, "checkin": checkin }).insert().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
     }
 
     // 删除 users_info 内容
@@ -33,7 +34,11 @@ class HandleUserInfo {
         return new Promise ((resolve, reject) => {
             new handle.Handle_usersInfo_table({ "user_id": user_id }).query().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
     }
-
+    // 获取用户创建时间
+    queryCreateTime () { let user_id = this.user_id
+        return new Promise ((resolve, reject) => {
+            new handle.Handle_usersInfo_table({ "user_id": user_id }).queryCreateTime().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })
+    }
     queryToy () { let user_id = this.user_id
         return new Promise ((resolve, reject) => {
             new handle.Handle_usersInfo_table({ "user_id": user_id }).queryToy().then((v) => { resolve(v) }).catch((v) => { reject(v) }) })

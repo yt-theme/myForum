@@ -9,6 +9,14 @@ window.addEventListener('hashchange', function () {
     // 将当前路由存到本地存储
     new handleLocalStorage({'route': hash}).set()
     r.validate(hash, window.location.href)
+    // 路由切换时 forum select 同时改变
+    console.log("hashchange forum select change", hash)
+    switch (hash) {
+        case '/': selectE("#headerSelectForum")[0].value = "Home"; break
+        case '/electric': selectE("#headerSelectForum")[0].value = "Electric"; break
+        case '/talk': selectE("#headerSelectForum")[0].value = "Talk"; break
+    }
+
 }, null)
 
 // mainPage
@@ -27,4 +35,8 @@ r.route("/electric", (routePath) => {
     // toy 列表
     mainPageShow_toy()
     js["comp_mainPage_toy"].init(userToyList["data"])
+ })
+
+ r.route("/talk", (routePath) => { 
+    destorySeedCompAll()
  })

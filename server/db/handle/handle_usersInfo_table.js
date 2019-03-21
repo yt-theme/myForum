@@ -4,18 +4,19 @@ let def = require("../def/def.js")
 class Handle_usersInfo_table {
     constructor (obj) {
         // this.id      = obj.id
-        this.user_id = obj.user_id
-        this.name    = obj.name
-        this.logo    = obj.logo
-        this.phone   = obj.phone
-        this.toy     = obj.toy
-        this.checkin = obj.checkin
+        this.user_id     = obj.user_id
+        this.create_time = obj.create_time
+        this.name        = obj.name
+        this.logo        = obj.logo
+        this.phone       = obj.phone
+        this.toy         = obj.toy
+        this.checkin     = obj.checkin
     }
     insert () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ 
-                sql: `insert into users_info (user_id, name, logo, phone, toy, checkin) values (?, ?, ?, ?, ?, ?)`,
-                values: [ this.user_id, this.name, this.logo, this.phone, this.toy, this.checkin ]
+                sql: `insert into users_info (user_id, create_time, name, logo, phone, toy, checkin) values (?, ?, ?, ?, ?, ?, ?)`,
+                values: [ this.user_id, this.create_time, this.name, this.logo, this.phone, this.toy, this.checkin ]
             }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
     delete () {
@@ -32,6 +33,11 @@ class Handle_usersInfo_table {
     query () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `select * from users_info where user_id = ?`, values: [ this.user_id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+    }
+    // 获取用户创建时间
+    queryCreateTime () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `select create_time from users_info where user_id = ?`, values: [ this.user_id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
     queryToy () {
         return new Promise ((resolve, reject) => {

@@ -214,6 +214,7 @@ function headerSelectForum_change (_this_) {
         switch (v) {
             case 'Home':     changeRouter('/'); break;
             case 'Electric': changeRouter('/electric'); break;
+            case 'Talk': changeRouter('/talk'); break;
             default: break
         }
     }

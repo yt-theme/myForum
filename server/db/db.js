@@ -4,14 +4,14 @@ let method = require("./method/method.js")
 // 对外方法
 module.exports = {
     // 数据库初始化
-    Init          : () => { return new Promise ((resolve, reject) => { init.Db_init().then((v) => { resolve(v) }).catch((v) => { reject(v) } ) })},
+    Init : () => { return new Promise ((resolve, reject) => { init.Db_init().then((v) => { resolve(v) }).catch((v) => { reject(v) } ) })},
 
 /*#########################
     xlsx导入
   #########################*/
 
     // 导入 xlsx
-    ImportXlsx    : (obj) => { return new method.ImportXlsx(obj) },
+    ImportXlsx : (obj) => { return new method.ImportXlsx(obj) },
 
 /*#########################
     判断表状态
@@ -38,15 +38,17 @@ module.exports = {
   #########################*/
 
     // 用户信息添加
-    InsertUserInfo   : (obj) => { return new method.HandleUserInfo(obj).insert() },
+    InsertUserInfo      : (obj) => { return new method.HandleUserInfo(obj).insert() },
     // 用户作息删除
-    DeleteUserInfo   : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).delete() },
+    DeleteUserInfo      : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).delete() },
     // 用户信息修改
-    ChangeUserInfo   : (obj) => { return new method.HandleUserInfo(obj).update() },
+    ChangeUserInfo      : (obj) => { return new method.HandleUserInfo(obj).update() },
     // 用户信息查询 按 用户id
-    QueryUserInfo    : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).query() },
+    QueryUserInfo       : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).query() },
+    // 获取用户创建时间
+    queryUserCreateTime : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).queryCreateTime() },
     // 用户信息查询 toy
-    QueryUserInfoToy : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).queryToy() },
+    QueryUserInfoToy    : (user_id) => { return new method.HandleUserInfo({"user_id": user_id}).queryToy() },
 
 /*#########################
     toy表                                                                   
