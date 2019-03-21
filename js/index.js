@@ -1,17 +1,31 @@
-// host
-let host = 'localhost'
-// window
 let that = this
-// 存储组件
-let appendCompDat = []
+// ################# 全局动态绑定变量 ##########
 // 存储 userToyList
-let userToyList = new Proxy({"data": []}, {
+let userToyList = new Proxy({"toy": []}, {
     set: function (target, key, value, receiver) {
         // 回调 toy 后续方法
         js["comp_mainPage_toy"].init(value)
         return Reflect.set(target, key, value, receiver)
     }
 })
+let userAge     = new Proxy({"toy": []}, {
+    set: function (target, key, value, receiver) {
+        // 更改页面 用户年龄
+        let arr_dom = selectE("#toyList_right_myGrow")[0].children
+        for (let i=0; i<arr_dom.length; i++) {
+            if (arr_dom[i].getAttribute("title") === "帐户年龄") {
+                let p = document.createElement('p')
+                let dateObj = timeConvDate(value)
+                p.innerHTML = `${dateObj["year"]}年${dateObj["month"]}月${dateObj["day"]}天`
+                p.style.marginTop = "-0.6em"
+                p.style.fontSize = "12px"
+                arr_dom[i].appendChild(p)
+            }
+        }
+        return Reflect.set(target, key, value, receiver)
+    }
+})
+// ################# 全局动态绑定变量 end ######
 window.onload = function () {
     console.log('hash', window.location.hash)
     // 定义组件方法保存
@@ -54,8 +68,51 @@ function displayE (elem, show) { selectE(elem)[0].style.display = show === 1 ? '
 function refresh () { window.location.reload() }
 // localStorage取token
 function getLocalStorageToken (tokenKeyArr) { return new handleLocalStorage(tokenKeyArr).query() }
-// localStorage取id
+// localStorage取key
 function getLocalStorageId (id) { return new handleLocalStorage([id]).query() }
+// 毫秒转换成日期格式
+class timeToDate {
+    constructor (millisecond) { 
+        this.second     = parseInt(millisecond /1000)
+        // 存储秒余数
+        this.remainder  = 0
+        // 标准年月日 => 秒数
+        this.standard   = { year: 31536000, month: 2592000, day: 86400 }
+        // 存储计算结果
+        this.resDateObj = { year: 0, month: 0, day: 0 }
+    }
+    _getYears () { let sec=this.second,  syear=this.standard["year"]
+        // 判断是否足够一年的秒数 => 31536000
+        if (sec < syear) { this.remainder=sec; this._getMonths() }
+        else {
+            this.resDateObj["year"] = parseInt(sec / syear)
+            this.remainder          = sec % syear
+            if (this.remainder > 0) { this._getMonths() }
+        }
+    }
+    _getMonths () { let rem=this.remainder,  smonth=this.standard["month"]
+        if (rem < smonth) { this._getDays() }
+        else {
+            this.resDateObj["month"] = parseInt(rem / smonth)
+            this.remainder           = rem % smonth
+            if (this.remainder > 0) { this._getDays() }
+        }
+    }
+    _getDays () { let rem=this.remainder,  sday=this.standard["day"]
+        if (rem < sday) { this.resDateObj["day"] = 1 }
+        else {
+            this.resDateObj["day"] = parseInt(rem / sday)
+            this.remainder         = rem % sday
+            if (this.remainder > 0) { this.resDateObj["day"] += 1 }
+        }
+    }
+
+    // 标准使用此方法获取
+    conversion () { this._getYears(); return this.resDateObj }
+}
+// 毫秒转换成日期格式 方法
+function timeConvDate (millisecond) { return new timeToDate(millisecond).conversion() }
+
 // 提示信息
 function messagePop (txt, time, callback) {
     if (selectE('.comp_popMessage')[0]) { delCompoAll('.comp_popMessage') }
@@ -166,12 +223,13 @@ function checkLoginStatu (mode) {
                 // 请求后端验证token
                 ajax('post', '/checklogin', {})
                 .then((v)  => {
-                    let queryRes = v['data']
-                    if (queryRes["r"] === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
+                    if (v['data']["r"] === 1) { displayE('#loginButton', 0); displayE('#logoutButton', 1); resolve(true) }
                     else { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
 
                     // 用户toy列表 获取
-                    userToyList["data"] = queryRes["toy"]
+                    userToyList["toy"] = v['data']["toy"]
+                    // 帐户年龄获取
+                    userAge["toy"]     = v['data']["age"]
 
                 })
                 .catch((v) => { console.log('checktoken er', v); resolve(false) })

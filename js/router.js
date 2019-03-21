@@ -27,14 +27,14 @@ r.route("/", (routePath) => {
     js["comp_mainPage_list"].init()
     // toy 列表
     mainPageShow_toy()
-    js["comp_mainPage_toy"].init(userToyList["data"])
+    js["comp_mainPage_toy"].init(userToyList["toy"])
 })
 
 r.route("/electric", (routePath) => { 
     destorySeedCompAll()
     // toy 列表
     mainPageShow_toy()
-    js["comp_mainPage_toy"].init(userToyList["data"])
+    js["comp_mainPage_toy"].init(userToyList["toy"])
  })
 
  r.route("/talk", (routePath) => { 

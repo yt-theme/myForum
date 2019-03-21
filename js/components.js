@@ -109,11 +109,11 @@ window.addEventListener('load', function () {
         }
         const js = {
             init () {
-                // 获取地理位置
-                ajax('get', 'http://pv.sohu.com/cityjson')
-                .then((v) => {
-                    alert(1)
-                })
+                // // 获取地理位置
+                // ajax('get', 'http://pv.sohu.com/cityjson')
+                // .then((v) => {
+                //     alert(1)
+                // })
                 
             },
         }
@@ -169,7 +169,6 @@ window.addEventListener('load', function () {
                             '<div class="block w_100 h_100">' +
                                 '<embed class="none" src="data:image/svg+xml;utf8,' + atob(ite.bgi) + '"/>' +
                             '</div>' +
-                            // '<span class="pos_a l_0 b_0 w_100 padd_2px"><nobr>' +  + '</nobr></span>' +
                         '</li>'
                     }, '')
                 }

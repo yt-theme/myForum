@@ -47,7 +47,6 @@ class UserLogin {
                                     "toy":     toyId_str,
                                     "checkin": 1 })
                                 .then((v2) => {
-                                    console.log("user_id", v['insertId'])
                                     // 返回数据
                                     res.end(JSON.stringify({ 
                                         'r': 1,
@@ -101,20 +100,12 @@ class UserLogin {
 
                     // 返回用户 age
                     let promise_age = new Promise((reoslve, reject) => {
-                        new handle.HandleUserCreateTime({ "user_id": v }).queryDate()
-                        .then((age) => { reoslve(age) }).catch((err) => { reject(err) })
-                    })
+                        new handle.HandleUserCreateTime({ "user_id": v }).queryDate().then((age) => { reoslve(age) }).catch((err) => { reject(err) }) })
                     
-
                     // 返回用户toy
                     // 查询用户拥有的 toy
                     let promise_toy = new Promise((resolve, reject) => {
-                        new handle.CheckoutUserToy(v).queryToyList()
-                        .then((toyArr) => {
-                            resolve(toyArr)
-                        })
-                        .catch((v1) => { reject(v1) })
-                    })
+                        new handle.CheckoutUserToy(v).queryToyList().then((toyArr) => { resolve(toyArr) }).catch((v1) => { reject(v1) }) })
 
                     Promise.all([promise_age, promise_toy]).then((valueArr) => {
                         let age=valueArr[0],  toyArr=valueArr[1]

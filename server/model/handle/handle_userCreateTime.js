@@ -10,6 +10,7 @@ class HandleUserCreateTime {
     queryDate () {
         return new Promise ((resolve, reject) => {
             this.query().then((v) => {
+
                 // 获取当前时间
                 let currentTime = parseInt(Date.parse(new Date()).toString())
                 // 前当时间减 create_time 为用户年龄 => 毫秒数

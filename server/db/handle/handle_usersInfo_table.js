@@ -37,7 +37,7 @@ class Handle_usersInfo_table {
     // 获取用户创建时间
     queryCreateTime () {
         return new Promise ((resolve, reject) => {
-            def.SqlQ({ sql: `select create_time from users_info where user_id = ?`, values: [ this.user_id ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+            def.SqlQ({ sql: `select create_time from users_info where user_id = ?`, values: [ this.user_id["user_id"] ] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
     queryToy () {
         return new Promise ((resolve, reject) => {
