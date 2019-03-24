@@ -194,7 +194,7 @@ function ajax (method, url, paramsObj) {
         } else if (method === 'post' || method === 'POST') {
             let token = ''
             try { token = getLocalStorageToken(['token'])['token']['token'] }
-            catch { token = '' }
+            catch (err) { token = '' }
             xhttp.open('POST', url, true)
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             xhttp.setRequestHeader("token", token)
@@ -216,7 +216,7 @@ function checkLoginStatu (mode) {
     return new Promise ((resolve, reject) => {
         let token = null
         try   { token = getLocalStorageToken(['token'])['token']['token'] }
-        catch { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
+        catch (err) { displayE('#loginButton', 1); displayE('#logoutButton', 0); resolve(false) }
         // 如果已经登录
         if (token) {
             if (mode === 1) {

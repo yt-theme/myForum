@@ -2,8 +2,8 @@ let mysql = require('mysql')
 
 var mysqlPool = mysql.createPool({
     host: 'localhost',
-    user: 'root',
-    password: 'root',
+    user: 'admin',
+    password: 'admin',
     database: 'forum'
 })
 
