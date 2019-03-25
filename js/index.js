@@ -301,5 +301,7 @@ function logout () { new handleLocalStorage().clear(); checkLoginStatu(0).then((
 // mainPage component
 // left
 function mainPageShow_list () { appendComp(comp_mainPage_list(), 'articleList') }
+// left electric
+function main_electricShow_list () { appendComp(comp_main_electric_list(), 'articleList') }
 // right
 function mainPageShow_toy () { appendComp(comp_mainPage_toy(), 'mainPage_toy') }

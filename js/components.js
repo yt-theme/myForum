@@ -150,6 +150,32 @@ window.addEventListener('load', function () {
         }
     }
 
+    // 选择 Electric 版块时主页面 left 组件
+    comp_main_electric_list = (htmVarArr) => {
+        const name = 'comp_main_electric_list'
+        const data = {
+                
+        }
+        const js = {
+            init () {
+
+            },
+        }
+        const html = `
+            <div class="pos_r w_100 h_100">
+                <div class="comp_main_electric_list_inner">
+                    
+                </div>
+            </div>
+        `
+        return {
+            name: name,
+            html: html,
+            data: data,
+            js:   js
+        }
+    }
+
     // right
     comp_mainPage_toy = (htmVarArr) => {
         const name = 'comp_mainPage_toy'

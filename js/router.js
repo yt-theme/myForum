@@ -32,6 +32,9 @@ r.route("/", (routePath) => {
 
 r.route("/electric", (routePath) => { 
     destorySeedCompAll()
+    // 主题列表
+    main_electricShow_list()
+    js["comp_main_electric_list"].init()
     // toy 列表
     mainPageShow_toy()
     js["comp_mainPage_toy"].init(userToyList["toy"])
