@@ -158,13 +158,55 @@ window.addEventListener('load', function () {
         }
         const js = {
             init () {
-
-            },
+                let data = [
+                    {
+                        'topic': 'this is topic',
+                        'auth': 'maxlin',
+                        'reply_look': '10/20',
+                        'time': '2011-11-11 12:31:41',
+                        'type': '技术分享'
+                    },
+                    {
+                        'topic': 'this is topic111111111111111111111111111111111111111111111111111111111111',
+                        'auth': 'maxlin',
+                        'reply_look': '10/20',
+                        'time': '2011-11-11 12:31:41',
+                        'type': '技术分享'
+                    },
+                    {
+                        'topic': 'this is topic',
+                        'auth': 'maxlin',
+                        'reply_look': '10/20',
+                        'time': '2011-11-11 12:31:41',
+                        'type': '技术分享'
+                    },
+                ]
+                let currentInner = selectE("#comp_main_electric_list_table")[0].innerHTML
+                let tmp = ''
+                data.forEach((ite) => {
+                    tmp += `<tr class="w_100">
+                        <td class="text_left">${ite["topic"]}</td>
+                        <td class="text_cent">${ite["auth"]}</td>
+                        <td class="text_cent">${ite["reply_look"]}</td>
+                        <td class="text_cent">${ite["time"]}</td>
+                        <td class="text_cent">${ite["type"]}</td>
+                    </tr>`
+                })
+                selectE("#comp_main_electric_list_table")[0].innerHTML = currentInner + tmp
+            }
         }
         const html = `
-            <div class="pos_r w_100 h_100">
-                <div class="comp_main_electric_list_inner">
-                    
+            <div class="pos_r w_100 color_858585 padd_l_8px comp_main_electric_list_wrapper">
+                <div class="w_100 h_100 bor_ra_2 padd_8px comp_main_electric_list_inner">
+                    <table id="comp_main_electric_list_table" class="comp_main_electric_list_inner_table w_100">
+                        <tr class="w_100">
+                            <td class="text_cent">主题</td>
+                            <td class="text_cent">作者</td>
+                            <td class="text_cent">回复/查看</td>
+                            <td class="text_cent">发布时间</td>
+                            <td class="text_cent">分类</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         `

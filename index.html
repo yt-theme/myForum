@@ -15,7 +15,7 @@
     <!-- header -->
     <div class="w_100vw bgc_f2f2f2 bor_b_eee flex flex_just_betw flex_alig_cent h_41px">
         <!-- header left -->
-        <div class="h_100 flex">
+        <div class="h_100 flex flex_alig_cent">
             <!-- logo -->
             <h4 class="bgc_e7e7e7 padd_8px color_4788bc h_100 flex flex_alig_cent flex_just_cent" onclick="clickLogo()">未命名论坛</h4>
             <select onchange="headerSelectForum_change(this)" id="headerSelectForum" class="bor_0 appearance_n padd_8px pos_r h_100 color_858585 text_cent">
@@ -23,6 +23,8 @@
                 <option value="Electric">Electric</option>
                 <option value="Talk">Talk</option>
             </select>
+            <!-- search -->
+            <input placeholder="search" class="w_200px h_80 bor_0 bor_ra_2 font_s_italic color_858585 outline_n padd_4px marg_lr_15px"/>
         </div>
         <!-- header right -->
         <div class="flex flex_alig_cent">
@@ -41,11 +43,11 @@
     </div>
     <!-- main -->
     <div id="main" class="pos_r h_main over_f">
-        <div class="flex w_100 h_100">
+        <div class="pos_a flex w_100 h_100">
             <!-- 帖列表组件 -->
             <div class="articleList_left pos_r marg_t_8px" id="articleList"></div>
             <!-- 功能组件 -->
-            <div class="pos_r w_20" id="mainPage_toy"></div>
+            <div class="pos_r w_20 bor_ra_2" id="mainPage_toy"></div>
         </div>
         <!-- 登录组件 (默认隐藏) -->
         <div class="pos_a t_0 l_0 w_100 h_100" id="loginContent"></div>

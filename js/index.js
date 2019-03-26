@@ -11,20 +11,29 @@ let userToyList = new Proxy({"toy": []}, {
 let userAge     = new Proxy({"toy": []}, {
     set: function (target, key, value, receiver) {
         // 更改页面 用户年龄
-        let arr_dom = selectE("#toyList_right_myGrow")[0].children
-        for (let i=0; i<arr_dom.length; i++) {
-            if (arr_dom[i].getAttribute("title") === "帐户年龄") {
-                let p = document.createElement('p')
-                let dateObj = timeConvDate(value)
-                p.innerHTML = `${dateObj["year"]}年${dateObj["month"]}月${dateObj["day"]}天`
-                p.style.marginTop = "-0.6em"
-                p.style.fontSize = "12px"
-                arr_dom[i].appendChild(p)
-            }
-        }
+        userAge_ChangeFunc(value)
         return Reflect.set(target, key, value, receiver)
     }
 })
+
+console.log(window)
+
+// #################### 变量改变时执行 ###############
+// 用户年龄改变时执行
+function userAge_ChangeFunc (value) {
+    let arr_dom = selectE("#toyList_right_myGrow")[0].children
+    for (let i=0; i<arr_dom.length; i++) {
+        if (arr_dom[i].getAttribute("title") === "帐户年龄") {
+            let p=document.createElement('p')
+            let dateObj=timeConvDate(value)
+            p.innerHTML = `${dateObj["year"]}年${dateObj["month"]}月${dateObj["day"]}天`
+            p.style.marginTop = "-0.6em"; p.style.fontSize = "12px"
+            arr_dom[i].appendChild(p)
+            break
+        }
+    }
+}
+
 // ################# 全局动态绑定变量 end ######
 window.onload = function () {
     console.log('hash', window.location.hash)
@@ -48,8 +57,6 @@ window.onload = function () {
     checkLoginStatu(1).then((v) => { })
 }
 
-console.log(window)
-
 // 选择器
 function selectE (elem) { return document.querySelectorAll(elem) }
 // 切换路由
@@ -62,6 +69,10 @@ function delCompoAll (elem) { if (selectE(elem)[0]) { selectE(elem)[0].parentNod
 function delAllE (elem) { selectE(elem)[0].parentNode.innerHTML = '' }
 // 销毁组件种子所有组件
 function destorySeedCompAll () { compSeedAll.forEach((v) => { delChildAll(selectE('#' + v)[0]) }) }
+// 销毁组件种子所有组件 可忽略某些组件 ['1', '2', '3']
+function destorySeedCompExcept (arr) { compSeedAll.forEach((v) => { if (arr.indexOf(v) === -1) { delChildAll(selectE('#' + v)[0]) } }) }
+// 销毁组件种子中某个组件
+function destorySeedComp (comp) { delChildAll(selectE('#' + comp)[0]) }
 // 元素 display 属性
 function displayE (elem, show) { selectE(elem)[0].style.display = show === 1 ? 'block' : 'none'  }
 // 刷新页面
@@ -157,7 +168,6 @@ function appendComp (comp, ele, callback) {
         selectE('.' + comp['name'])[0].innerHTML = comp['html']
         that.js[comp['name']] = comp['js']
         that.data[comp['name']] = comp['data']
-        // console.log('data', that.data)
 
         // 添加销毁方法
         that.js[comp['name']].destory = (_this_) => { let elem = _this_ ? _this_ : selectE('#' + comp['name'])[0]; elem.parentNode.parentNode.style.display = 'none'; delChildE(elem.parentNode.parentNode, elem.parentNode)}
@@ -230,7 +240,8 @@ function checkLoginStatu (mode) {
                     userToyList["toy"] = v['data']["toy"]
                     // 帐户年龄获取
                     userAge["toy"]     = v['data']["age"]
-
+                    // 用户年龄存入 localStorage
+                    new handleLocalStorage({"age": v['data']["age"]}).set()
                 })
                 .catch((v) => { console.log('checktoken er', v); resolve(false) })
             } else { resolve(true) }
@@ -242,20 +253,20 @@ function checkLoginStatu (mode) {
 // 操作 localStorage
 class handleLocalStorage {
     constructor (params) {
-            // { name : { a: 1, b: 2 }}
-            // ['it1', 'it2']
+            // >> { name : { a: 1, b: 2 }}
+            // << ['it1', 'it2']
             this.params = params
     }
     set () {
         if (this.params.constructor === Object) {
-            let obj = this.params
-            for (let ite in obj) { localStorage.setItem(ite, JSON.stringify(obj[ite])) }
+            let params = this.params
+            for (let ite in params) { localStorage.setItem(ite, JSON.stringify(params[ite])) }
         }
     }
     query () {
         if (this.params.constructor === Array) {
-            let tmp = {}, arr = this.params
-            arr.forEach((ite) => { tmp[ite] = JSON.parse(localStorage.getItem(ite)) })
+            let tmp = {}, params = this.params
+            params.forEach((ite) => { tmp[ite] = JSON.parse(localStorage.getItem(ite)) })
             return tmp
         }
     } 
@@ -272,7 +283,7 @@ function headerSelectForum_change (_this_) {
         switch (v) {
             case 'Home':     changeRouter('/'); break;
             case 'Electric': changeRouter('/electric'); break;
-            case 'Talk': changeRouter('/talk'); break;
+            case 'Talk':     changeRouter('/talk'); break;
             default: break
         }
     }
@@ -282,10 +293,7 @@ function headerSelectForum_change (_this_) {
 // (1) 注册组件种子
 // 组件种子初始化为 none
 let compSeedAll = [
-    'loginContent',
-    'articleList',
-    'mainPage_toy',
-    'popMessageComp',
+    'loginContent', 'articleList', 'mainPage_toy', 'popMessageComp',
 ]
 compSeedAll.forEach((v) => { displayE('#' + v, 0) })
 

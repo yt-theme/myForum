@@ -37,6 +37,7 @@
 .m_w_300px { min-width: 300px; }
 .m_w_140px { min-width: 140px; }
 .h_100 { height: 100%; }
+.h_80 { height: 80%; }
 .h_50 { height: 50%; }
 .h_33 { height: 33.333%; }
 .h_41px { height: 41px; }
@@ -50,6 +51,8 @@
 
 /* ########### 边距 边框 ########### */
 .padd_8px { padding: 8px; }
+.padd_l_8px { padding-left: 8px; }
+.padd_4px { padding: 4px; }
 .padd_2px { padding: 2px; }
 .padd_tb_8px { padding-top: 8px; padding-bottom: 8px; }
 .padd_16px { padding: 16px; }
@@ -59,6 +62,7 @@
 .marg_tb_8px { margin-top: 8px; margin-bottom: 8px; }
 .marg_t_8px { margin-top: 8px; }
 .marg_lr_13px { margin-left: 13px; margin-right: 13px; }
+.marg_lr_15px { margin-left: 15px; margin-right: 15px; }
 .bor_0 { border: 0; }
 .bor_1_r { border: 1px solid red; }
 .bor_ra_2 { border-radius: 2px; }
@@ -71,9 +75,11 @@
 .color_858585 { color: #858585; }
 .color_f4f4f4 { color: #f4f4f4; }
 .text_cent { text-align: center; }
+.text_left { text-align: left; }
 .text_right { text-align: right; }
 .text_decor { text-decoration: none; }
 .text_sha_222 { text-shadow: 0 0 19px #222; }
+.font_s_italic { font-style: italic; }
 
 
 
@@ -97,6 +103,8 @@
 .over_y_v { overflow-y: visible; }
 .over_x_h { overflow-x: hidden; }
 .appearance_n { appearance:none; -moz-appearance:none; -webkit-appearance:none; }
+.outline_n { outline: none; }
+.lh_41px { line-height: 41px; }
 
 /* ########### 公共样式 ########### */
 .comp_popMessage_comp {
@@ -125,7 +133,7 @@
 }
 .form input[type=button] { width: 100%; }
 .articleList_left {
-    width: calc(100% - 370px);
+    width: calc(100% - 284px);
     min-width: 477px;
     height: calc(100% - 16px);
 }
@@ -136,7 +144,7 @@
     background-color: #f1f1f1
 }
 .toyList_right {
-    min-width: 370px;
+    width: 284px;
 }
 .toy_style {
     float: left;
@@ -156,5 +164,27 @@
 
 /* electric 版块 */
 .comp_main_electric_list_inner {
-    
+    background-color: #F2F2F2;
+}
+.comp_main_electric_list_inner_table tr> td {
+    width: 25%;
+    max-width: 25%;
+    overflow: hidden;
+    /* white-space: nowrap; */
+    text-overflow: ellipsis;
+}
+.comp_main_electric_list_inner_table tr> td:nth-child(1) {
+    width: 30%;
+}
+.comp_main_electric_list_inner_table tr> td:nth-child(2) {
+    width: 20%;
+}
+.comp_main_electric_list_inner_table tr> td:nth-child(3) {
+    width: 20%;
+}
+.comp_main_electric_list_inner_table tr> td:nth-child(4) {
+    width: 20%;
+}
+.comp_main_electric_list_inner_table tr> td:nth-child(5) {
+    width: 10%;
 }
