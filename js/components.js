@@ -167,7 +167,7 @@ window.addEventListener('load', function () {
                         'type': '技术分享'
                     },
                     {
-                        'topic': 'this is topic111111111111111111111111111111111111111111111111111111111111',
+                        'topic': 'this is topic11111111111111111111111111111111111111111111',
                         'auth': 'maxlin',
                         'reply_look': '10/20',
                         'time': '2011-11-11 12:31:41',
@@ -184,29 +184,21 @@ window.addEventListener('load', function () {
                 let currentInner = selectE("#comp_main_electric_list_table")[0].innerHTML
                 let tmp = ''
                 data.forEach((ite) => {
-                    tmp += `<tr class="w_100">
-                        <td class="text_left">${ite["topic"]}</td>
-                        <td class="text_cent">${ite["auth"]}</td>
-                        <td class="text_cent">${ite["reply_look"]}</td>
-                        <td class="text_cent">${ite["time"]}</td>
-                        <td class="text_cent">${ite["type"]}</td>
-                    </tr>`
+                    tmp += `<li class="w_100 bor_ra_2 text_cent padd_4px padd_t_8px comp_main_electric_list_style_normal cur_p">
+                        <span class="w_50 m_w_50px bgc_f2f2f2 box_shadw_c9d6e0 m_w_140px text_left white_space_n over_h txt_over_elli in_block bor_ra_16 padd_lr_13px padd_tb_8px" title="${ite["topic"]}">${ite["topic"]}</span>
+                        <span class="w_9 m_w_50px bgc_f2f2f2 box_shadw_c9d6e0 text_cent white_space_n over_h txt_over_elli in_block bor_ra_16 padd_lr_13px padd_tb_8px" title="${ite["auth"]}">${ite["auth"]}</span>
+                        <span class="w_9 m_w_50px bgc_f2f2f2 box_shadw_c9d6e0 text_cent white_space_n over_h txt_over_elli in_block bor_ra_16 padd_lr_13px padd_tb_8px" title="${ite["reply_look"]}">${ite["reply_look"]}</span>
+                        <span class="w_20 m_w_50px bgc_f2f2f2 box_shadw_c9d6e0 text_cent white_space_n over_h txt_over_elli in_block bor_ra_16 padd_lr_13px padd_tb_8px" title="${ite["time"]}">${ite["time"]}</span>
+                        <span class="w_9 m_w_50px bgc_f2f2f2 box_shadw_c9d6e0 text_cent white_space_n over_h txt_over_elli in_block bor_ra_16 padd_lr_13px padd_tb_8px" title="${ite["type"]}">${ite["type"]}</span>
+                    </li>`
                 })
                 selectE("#comp_main_electric_list_table")[0].innerHTML = currentInner + tmp
             }
         }
         const html = `
             <div class="pos_r w_100 color_858585 padd_l_8px comp_main_electric_list_wrapper">
-                <div class="w_100 h_100 bor_ra_2 padd_8px comp_main_electric_list_inner">
-                    <table id="comp_main_electric_list_table" class="comp_main_electric_list_inner_table w_100">
-                        <tr class="w_100">
-                            <td class="text_cent">主题</td>
-                            <td class="text_cent">作者</td>
-                            <td class="text_cent">回复/查看</td>
-                            <td class="text_cent">发布时间</td>
-                            <td class="text_cent">分类</td>
-                        </tr>
-                    </table>
+                <div class="w_100 h_100 bor_ra_2 padd_8px padd_t_0 comp_main_electric_list_inner">
+                    <ul id="comp_main_electric_list_table" class="lis_sty_n comp_main_electric_list_inner_table w_100"></ul>
                 </div>
             </div>
         `
