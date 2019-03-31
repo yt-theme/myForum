@@ -20,7 +20,7 @@
     "http2": "^3.3.7",
     "inherits": "^2.0.3",
     "isarray": "^1.0.0",
-    "jsonwebtoken": "^8.5.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.16.0",
     "node-xlsx": "^0.14.1",
     "process-nextick-args": "^2.0.0",
