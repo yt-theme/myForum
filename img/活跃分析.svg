@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
-   sodipodi:docname="经验.svg">
+   sodipodi:docname="活跃分析.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="3.5834798"
-     inkscape:cy="28.9235"
+     inkscape:zoom="4.0009618"
+     inkscape:cx="68.003581"
+     inkscape:cy="31.094452"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -79,38 +79,16 @@
        style="fill:#c9d6e0;fill-opacity:1;stroke-width:0.26458329"
        ry="0.79375339" />
     <path
-       sodipodi:type="star"
-       style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="path4617-6"
-       sodipodi:sides="5"
-       sodipodi:cx="9.260417"
-       sodipodi:cy="288.40103"
-       sodipodi:r1="3.96875"
-       sodipodi:r2="1.984375"
-       sodipodi:arg1="-1.5707963"
-       sodipodi:arg2="-0.9424778"
-       inkscape:flatsided="false"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m 9.2604171,284.43228 1.1663859,2.36336 2.60812,0.37898 -1.887253,1.83962 0.44552,2.59758 -2.332773,-1.22641 -2.3327728,1.22641 0.44552,-2.59758 -1.8872527,-1.83962 2.6081191,-0.37898 z"
-       inkscape:transform-center-y="-0.62409615"
-       transform="matrix(1.6823395,0,0,1.6468217,-5.7453475,-186.40768)" />
+       style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 3.1750002,289.0625 11.1125,281.65416 8.4666667,285.62291 16.404167,287.475 8.4666667,294.88333 11.1125,290.91458 Z"
+       id="path4631-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
     <path
-       sodipodi:type="star"
-       style="fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="path4617"
-       sodipodi:sides="5"
-       sodipodi:cx="9.260417"
-       sodipodi:cy="288.40103"
-       sodipodi:r1="3.96875"
-       sodipodi:r2="1.984375"
-       sodipodi:arg1="-1.5707963"
-       sodipodi:arg2="-0.9424778"
-       inkscape:flatsided="false"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m 9.2604171,284.43228 1.1663859,2.36336 2.60812,0.37898 -1.887253,1.83962 0.44552,2.59758 -2.332773,-1.22641 -2.3327728,1.22641 0.44552,-2.59758 -1.8872527,-1.83962 2.6081191,-0.37898 z"
-       inkscape:transform-center-y="-0.62409615"
-       transform="matrix(1.6823395,0,0,1.6468217,-6.3187488,-187.01968)" />
+       style="fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 2.6458333,288.53333 7.9374997,-7.40834 -2.645833,3.96875 7.9375,1.85209 -7.9375,7.40833 2.645833,-3.96875 z"
+       id="path4631"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>

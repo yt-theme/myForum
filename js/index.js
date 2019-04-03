@@ -27,7 +27,7 @@ function userAge_ChangeFunc (value) {
             let p=document.createElement('p')
             let dateObj=timeConvDate(value)
             p.innerHTML = `${dateObj["year"]}年${dateObj["month"]}月${dateObj["day"]}天`
-            p.style.marginTop = "-0.6em"; p.style.fontSize = "12px"
+            p.style.marginTop = "-35px"; p.style.fontSize = "12px"
             arr_dom[i].appendChild(p)
             break
         }

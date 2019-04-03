@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
-   sodipodi:docname="经验.svg">
+   sodipodi:docname="经验分析.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="3.5834798"
-     inkscape:cy="28.9235"
+     inkscape:zoom="32"
+     inkscape:cx="51.179484"
+     inkscape:cy="39.662291"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -37,7 +37,7 @@
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:snap-global="true"
+     inkscape:snap-global="false"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      inkscape:bbox-nodes="true"
@@ -61,7 +61,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -80,23 +80,6 @@
        ry="0.79375339" />
     <path
        sodipodi:type="star"
-       style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="path4617-6"
-       sodipodi:sides="5"
-       sodipodi:cx="9.260417"
-       sodipodi:cy="288.40103"
-       sodipodi:r1="3.96875"
-       sodipodi:r2="1.984375"
-       sodipodi:arg1="-1.5707963"
-       sodipodi:arg2="-0.9424778"
-       inkscape:flatsided="false"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m 9.2604171,284.43228 1.1663859,2.36336 2.60812,0.37898 -1.887253,1.83962 0.44552,2.59758 -2.332773,-1.22641 -2.3327728,1.22641 0.44552,-2.59758 -1.8872527,-1.83962 2.6081191,-0.37898 z"
-       inkscape:transform-center-y="-0.62409615"
-       transform="matrix(1.6823395,0,0,1.6468217,-5.7453475,-186.40768)" />
-    <path
-       sodipodi:type="star"
        style="fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="path4617"
        sodipodi:sides="5"
@@ -110,7 +93,18 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 9.2604171,284.43228 1.1663859,2.36336 2.60812,0.37898 -1.887253,1.83962 0.44552,2.59758 -2.332773,-1.22641 -2.3327728,1.22641 0.44552,-2.59758 -1.8872527,-1.83962 2.6081191,-0.37898 z"
-       inkscape:transform-center-y="-0.62409615"
-       transform="matrix(1.6823395,0,0,1.6468217,-6.3187488,-187.01968)" />
+       inkscape:transform-center-y="-0.27957029"
+       transform="matrix(0.76231005,0,0,0.73768255,5.6095286,72.306683)" />
+    <path
+       style="fill:#f9f9f9;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 2.6458333,282.44791 H 3.96875 v 10.58333 H 15.875 v 1.32292 H 2.6458333 Z"
+       id="path4505"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#f9f9f9;stroke-width:1.05833328;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 3.96875,293.03124 2.6458333,-5.29166 2.6458334,2.64583 3.9687503,-6.61458"
+       id="path4507"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
   </g>
 </svg>
