@@ -293,7 +293,7 @@ function headerSelectForum_change (_this_) {
 // (1) 注册组件种子
 // 组件种子初始化为 none
 let compSeedAll = [
-    'loginContent', 'articleList', 'mainPage_toy', 'popMessageComp',
+    'loginContent', 'articleList', 'mainPage_toy', 'popMessageComp', 'main_publish'
 ]
 compSeedAll.forEach((v) => { displayE('#' + v, 0) })
 
@@ -313,3 +313,6 @@ function mainPageShow_list () { appendComp(comp_mainPage_list(), 'articleList') 
 function main_electricShow_list () { appendComp(comp_main_electric_list(), 'articleList') }
 // right
 function mainPageShow_toy () { appendComp(comp_mainPage_toy(), 'mainPage_toy') }
+
+// publish
+function mainPublish () { appendComp(comp_main_publish(), 'main_publish') }

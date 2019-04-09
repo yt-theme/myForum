@@ -49,6 +49,9 @@ r.route("/electric", (routePath) => {
     js["comp_mainPage_toy"].init(userToyList["toy"])
     // 保持 切换路由 时设置 用户年龄
     userAge_ChangeFunc(new handleLocalStorage(["age"]).query()["age"])
+
+    // 发帖组件
+    mainPublish()
 })
 
 r.route("/talk", (routePath) => { 

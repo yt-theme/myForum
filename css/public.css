@@ -171,6 +171,13 @@
     margin: 5px;
     list-style: none;
 }
+/* 发帖组件 */
+#main_publish {
+    bottom: 200px;
+}
+.comp_main_publish_title> input {
+    height: 32px;
+} 
 
 /* ############# screen ######## */
 @media screen and (max-width: 1280px) {

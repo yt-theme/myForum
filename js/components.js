@@ -210,6 +210,37 @@ window.addEventListener('load', function () {
         }
     }
 
+    // 发帖组件
+    comp_main_publish = (htmVarArr) => {
+        const name = 'comp_main_publish'
+        const data = {
+                
+        }
+        const js = {
+            init () {
+                
+            }
+        }
+        const html = `
+            <div class="w_100 color_858585 padd_l_8px comp_main_publish_wrapper">
+                <div class="w_100 h_100 comp_main_publish_inner">
+                    <div class="w_100 comp_main_publish_title">
+                        <input class="w_100 bor_0 bgc_f2f2f2 bor_ra_16 padd_lr_13px box_shadw_777"/>
+                    </div>
+                    <div class="w_100 comp_main_publist_content">
+                        <textarea class="w_100 bor_0 bgc_f2f2f2 bor_ra_16 padd_lr_13px box_shadw_777"></textarea>
+                    </div>
+                </div>
+            </div>
+        `
+        return {
+            name: name,
+            html: html,
+            data: data,
+            js:   js
+        }
+    }
+
     // right
     comp_mainPage_toy = (htmVarArr) => {
         const name = 'comp_mainPage_toy'
