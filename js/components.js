@@ -236,7 +236,7 @@ window.addEventListener('load', function () {
                                 <span class="bgc_f2f2f2 padd_6_5px cur_p">插入图片</span>
                             </span>
                             <span class="color_9cacb9 padd_l_8px">
-                                <span class="bgc_f2f2f2 padd_6_5px cur_p">&#8195;发布&#8195;</span>
+                                <span class="bgc_f2f2f2 padd_6_5px cur_p">发布文章</span>
                             </span>
                         </div>
                     </div>
