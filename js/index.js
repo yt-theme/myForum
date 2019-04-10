@@ -316,3 +316,16 @@ function mainPageShow_toy () { appendComp(comp_mainPage_toy(), 'mainPage_toy') }
 
 // publish
 function mainPublish () { appendComp(comp_main_publish(), 'main_publish') }
+
+// toy 绑定事件
+function mainToy_event () {
+    selectE('.toy_style').forEach((ite, ind) => {
+        switch (ite.getAttribute('title')) {
+            case '发布':
+                selectE('.toy_style')[ind].onclick = function () {
+                    selectE('#main_publish')[0].style.left = '0'
+                }
+            break;
+        }
+    })
+}

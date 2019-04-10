@@ -36,6 +36,7 @@
 .w_20 { width: 20%; }
 .w_9 { width: 9%; }
 .w_80 { width: 80%; }
+.w_86 { width: 86%; }
 .m_w_300px { min-width: 300px; }
 .m_w_140px { min-width: 140px; }
 .m_w_50px { min-width: 50px; }
@@ -53,14 +54,17 @@
 
 
 /* ########### 边距 边框 ########### */
+.padd_6_5px { padding: 6.5px; }
 .padd_8px { padding: 8px; }
 .padd_l_8px { padding-left: 8px; }
 .padd_4px { padding: 4px; }
 .padd_2px { padding: 2px; }
 .padd_lr_13px { padding-left: 13px; padding-right: 13px; }
+.padd_lr_8px { padding-left: 8px; padding-right: 8px; }
 .padd_16px { padding: 16px; }
 .padd_tb_8px { padding-top: 8px; padding-bottom: 8px; }
 .padd_tb_16px { padding-top: 16px; padding-bottom: 16px; }
+.padd_tb_32px { padding-top: 32px; padding-bottom: 32px; }
 .padd_t_13px { padding-top: 13px; }
 .padd_t_8px { padding-top: 8px; }
 .padd_t_0 { padding-top: 0; }
@@ -79,6 +83,7 @@
 .bor_ra_4 { border-radius: 4px; }
 .bor_ra_8 { border-radius: 8px; }
 .bor_ra_16 { border-radius: 16px; }
+.bor_ra_50 { border-radius: 50%; }
 .bor_b_eee { border-bottom: 2px solid #eee; }
 
 
@@ -87,6 +92,7 @@
 .color_4788bc { color: #4788bc; }
 .color_858585 { color: #858585; }
 .color_f4f4f4 { color: #f4f4f4; }
+.color_9cacb9 { color: #9CACB9; }
 .text_cent { text-align: center; }
 .text_left { text-align: left; }
 .text_right { text-align: right; }
@@ -173,11 +179,55 @@
 }
 /* 发帖组件 */
 #main_publish {
-    bottom: 200px;
+    top: 4vh;
+    /* 默认隐藏 */
+    left: -100%;
+    width: 90vw;
+    min-width: 700px;
+    height: 80vh;
+    margin-left: 5vw;
+    transition: all 0.3s;
+}
+.comp_main_publish_wrapper {
+    background-color: #9CACB9;
+}
+.comp_main_publish_wrapper_close {
+    right: -10px;
+    top: -10px;
+    width: 25px;
+    height: 25px;
+    background-color: #9CACB9;
+    box-shadow: 0 0 5px #F2F2F2;
+    transition: all 0.3s;
+}
+.comp_main_publish_wrapper_close::before {
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 1px;
+    content: '';
+    width: calc(100% - 2px);
+    height: 2px;
+    border-radius: 1px;
+    background-color: #F2F2F2;
+}
+.comp_main_publish_wrapper_close:hover {
+    background-color: rgb(240, 112, 102);
+    transform: rotate(360deg);
+    transition: all 0.5s;
+}
+.comp_main_publish_inner {
+    min-width: 300px;
 }
 .comp_main_publish_title> input {
+    width: 25%;
+    min-width: 370px;
     height: 32px;
-} 
+}
+.comp_main_publist_content> textarea {
+    height: calc(80vh - 74px);
+    margin-top: 11px;
+    resize: none;
+}
 
 /* ############# screen ######## */
 @media screen and (max-width: 1280px) {

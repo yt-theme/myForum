@@ -218,19 +218,32 @@ window.addEventListener('load', function () {
         }
         const js = {
             init () {
-                
+
+            },
+            // 事件绑定
+            close () {
+                selectE('#main_publish')[0].style.left = '-100%'
             }
         }
         const html = `
-            <div class="w_100 color_858585 padd_l_8px comp_main_publish_wrapper">
-                <div class="w_100 h_100 comp_main_publish_inner">
-                    <div class="w_100 comp_main_publish_title">
-                        <input class="w_100 bor_0 bgc_f2f2f2 bor_ra_16 padd_lr_13px box_shadw_777"/>
+            <div class="pos_r flex flex_just_cent flex_alig_cent w_100 color_858585 padd_tb_32px comp_main_publish_wrapper">
+                <i onclick="js.${name}.close()" class="pos_a block cur_p bor_ra_50 comp_main_publish_wrapper_close"></i>
+                <form class="w_100 padd_lr_13px h_100 comp_main_publish_inner">
+                    <div class="flex flex_just_betw flex_alig_cent comp_main_publish_title">
+                        <input class="w_100 bor_0 bgc_f2f2f2 padd_8px"/>
+                        <div>
+                            <span class="color_9cacb9 padd_l_8px">
+                                <span class="bgc_f2f2f2 padd_6_5px cur_p">插入图片</span>
+                            </span>
+                            <span class="color_9cacb9 padd_l_8px">
+                                <span class="bgc_f2f2f2 padd_6_5px cur_p">&#8195;发布&#8195;</span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="w_100 comp_main_publist_content">
-                        <textarea class="w_100 bor_0 bgc_f2f2f2 bor_ra_16 padd_lr_13px box_shadw_777"></textarea>
+                    <div class="comp_main_publist_content">
+                        <textarea class="w_100 bor_0 bgc_f2f2f2 padd_8px"></textarea>
                     </div>
-                </div>
+                </form>
             </div>
         `
         return {
@@ -270,6 +283,9 @@ window.addEventListener('load', function () {
                 createToyList('#toyList_right_myTool', myToolList)
                 // 讨论互动 列表生成
                 createToyList('#toyList_right_discuss', discussList)
+
+                // toy 绑定事件
+                mainToy_event()
             }
         }
         const html = `
