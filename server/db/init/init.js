@@ -128,6 +128,20 @@ class dbInit {
                 .then((v)  => { console.log('home_hot table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
         }) 
     }
+    // 文件表
+    dbInit_file_table () {
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `create table if not exists \`file\` (
+                    \`id\` bigint not null auto_increment,
+                    \`author\` varchar(30) default null,
+                    \`title\` char(14) default null,
+                    \`link\` TEXT default null,
+                    \`tag\` char(1) default null,
+                    primary key (\`id\`)
+                ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
+                .then((v)  => { console.log('file table already init'); resolve(v) }).catch((v) => { console.log('toy table init err'); reject(v) })
+        }) 
+    }
 }
 
 // 数据表初始化
@@ -145,6 +159,8 @@ function Db_init () {
         new dbInit().dbInit_toy_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
         // 首页 home_hot 表初始化
         new dbInit().dbInit_homeHot_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
+        // 文件表 初始化
+        new dbInit().dbInit_file_table().then((v) => { resolve(v) }).catch((v) => { reject(v) })
     })
 }
 

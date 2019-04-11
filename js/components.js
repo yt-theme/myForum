@@ -233,10 +233,16 @@ window.addEventListener('load', function () {
                         <input class="w_100 bor_0 bgc_f2f2f2 padd_8px"/>
                         <div>
                             <span class="color_9cacb9 padd_l_8px">
-                                <span class="bgc_f2f2f2 padd_6_5px cur_p">插入图片</span>
+                                <span class="bgc_f2f2f2 bor_ra_16 padd_6_5px padd_lr_13px cur_p">插入图片</span>
                             </span>
                             <span class="color_9cacb9 padd_l_8px">
-                                <span class="bgc_f2f2f2 padd_6_5px cur_p">发布文章</span>
+                                <select class="bgc_f2f2f2 outline_n bor_ra_16 color_9cacb9 appearance_n bor_ra_16 bor_0 padd_5_5px padd_lr_13px cur_p">
+                                    <option value="0" selected>默认标签</option>
+                                    <option value="1">技术分享</option>
+                                </select>
+                            </span>
+                            <span class="color_9cacb9 padd_l_8px">
+                                <span class="bgc_f2f2f2 color_9cacb9 bor_ra_16 padd_6_5px padd_lr_13px cur_p">发布文章</span>
                             </span>
                         </div>
                     </div>
