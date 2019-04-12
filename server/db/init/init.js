@@ -51,16 +51,17 @@ class dbInit {
                 .then((v)  => { console.log('forum table already init'); resolve(v) }).catch((v) => { console.log('forum table init err'); reject(v) })
         }) 
     }
-    // article_topic 主题 表初始化
+    // article 主题 表初始化
     dbInit_article_table () {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `create table if not exists \`article\` (
                     \`id\` bigint not null auto_increment,
+                    \`article_id\` varchar(40) default null,
                     \`forum_id\` bigint default null,
                     \`title\` varchar(40) default null,
                     \`author\` varchar(30) default null,
                     \`reply_count\` bigint default null,
-                    \`create_time\` datetime default null,
+                    \`create_time\` bigint default null,
                     primary key (\`id\`)
                 ) engine=InnoDB auto_increment=1 default charset=utf8;`, values: [] })
                 .then((v)  => { console.log('article table already init'); resolve(v) }).catch((v) => { console.log('article table init err'); reject(v) })

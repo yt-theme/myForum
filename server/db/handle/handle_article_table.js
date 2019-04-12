@@ -2,12 +2,24 @@ let def = require("../def/def")
 
 class Handle_article_table {
     constructor (obj) {
+        // 属性
         this.forum_id    = obj.forum_id || ''
+        this.article_id  = obj.article_id || ''
+        this.author      = obj.author || ''
+        // 查询
         this.page        = obj.page || ''
         this.rows        = obj.rows || ''
         this.topic       = obj.topic || ''
-        this.author      = obj.author || ''
         this.create_time = obj.create_time || ''
+        // 发帖
+        // 主题
+        this.title       = obj.title || ''
+        this.content     = obj.content || ''
+        this.file        = obj.file || ''
+        this.tag         = obj.tag || ''
+        this.reply_count = obj.reply_count || 0
+        this.create_time = obj.create_time || ''
+        // 内容
     }
 
 // ################## query ###############
@@ -33,8 +45,16 @@ class Handle_article_table {
 
     }
     // 基于 ( forum_id && 分页 && 编写时间 ) 查询
-    craetePageFourmQuery () { let forum_id=this.forum_id,  page=this.page,  rows=this.rows,  create_time=this.create_time
+    createPageFourmQuery () { let forum_id=this.forum_id,  page=this.page,  rows=this.rows,  create_time=this.create_time
 
+    }
+    // 新增 article
+    insertArticle () {
+        let title=this.title,  content=this.content,  file=this.file,  tag=this.tag
+        return new Promise ((resolve, reject) => {
+            def.SqlQ({ sql: `
+                
+                `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
 
 // ################## add ###############
