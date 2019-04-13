@@ -1,4 +1,5 @@
 let def = require("../def/def")
+let utils = require("../../utils/utils")
 
 class Handle_article_table {
     constructor (obj) {
@@ -9,7 +10,7 @@ class Handle_article_table {
         // 查询
         this.page        = obj.page || ''
         this.rows        = obj.rows || ''
-        this.topic       = obj.topic || ''
+        // this.topic       = obj.topic || ''
         this.create_time = obj.create_time || ''
         // 发帖
         // 主题
@@ -20,6 +21,7 @@ class Handle_article_table {
         this.reply_count = obj.reply_count || 0
         this.create_time = obj.create_time || ''
         // 内容
+        this.content     = obj.content || ''
     }
 
 // ################## query ###############
@@ -48,16 +50,20 @@ class Handle_article_table {
     createPageFourmQuery () { let forum_id=this.forum_id,  page=this.page,  rows=this.rows,  create_time=this.create_time
 
     }
-    // 新增 article
+    // 新增 article 标题 属性 内容
     insertArticle () {
-        let title=this.title,  content=this.content,  file=this.file,  tag=this.tag
+        let forum_id=this.forum_id,  article_id=this.article_id,   title=this.title,
+            content=this.content,    file=this.file,               tag=this.tag,
+            author=this.author,      create_time=this.create_time
         return new Promise ((resolve, reject) => {
+            // 生成 uuid
+            let uuid = new utils.Create_uuid().v1()
+
             def.SqlQ({ sql: `
                 
                 `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
     }
 
-// ################## add ###############
 
 }
 
