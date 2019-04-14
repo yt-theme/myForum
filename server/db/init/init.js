@@ -59,6 +59,7 @@ class dbInit {
                     \`article_id\` varchar(40) default null,
                     \`forum_id\` bigint default null,
                     \`title\` varchar(40) default null,
+                    \`tag\` varchar(40) default null,
                     \`author\` varchar(30) default null,
                     \`reply_count\` bigint default null,
                     \`create_time\` bigint default null,

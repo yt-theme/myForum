@@ -50,21 +50,34 @@ class Handle_article_table {
     createPageFourmQuery () { let forum_id=this.forum_id,  page=this.page,  rows=this.rows,  create_time=this.create_time
 
     }
-    // 新增 article 标题 属性 内容
+    // 新增 article 标题/属性 内容
     insertArticle () {
         let forum_id=this.forum_id,  article_id=this.article_id,   title=this.title,
             content=this.content,    file=this.file,               tag=this.tag,
             author=this.author,      create_time=this.create_time
+        
+        // 生成 uuid
+        let uuid = new utils.Create_uuid().v1()
+
         return new Promise ((resolve, reject) => {
-            // 生成 uuid
-            let uuid = new utils.Create_uuid().v1()
-
-            def.SqlQ({ sql: `
-                
-                `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+            let promise_title = new Promise ((resolve, reject) => {
+                def.SqlQ({ sql: `
+                        insert into article (forum_id, article_id, title, tag, author, reply_count, create_time)
+                        values (${forum_id}, ${article_id}, ${title}, ${tag}, ${author}, 0, ${create_time})
+                    `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+            
+            let promise_content = new Promise ((resolve, reject) => {
+                def.SqlQ({ sql: `
+                        insert into article_content (forum_id, article_id, content)
+                        values (${forum_id}, ${article_id}, ${content})
+                    `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+            
+            Promise.all([promise_title, promise_content]).then((valueArr) => {
+                let title_result=valueArr[0],  content_result=valueArr[1]
+                resolve([valueArr])
+            }).catch((v) => { reject(valueArr) })
+        })
     }
-
-
 }
 
 module.exports = {
