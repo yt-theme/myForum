@@ -57,9 +57,10 @@ class dbInit {
             def.SqlQ({ sql: `create table if not exists \`article\` (
                     \`id\` bigint not null auto_increment,
                     \`article_id\` varchar(40) default null,
-                    \`forum_id\` bigint default null,
+                    \`forum_id\` varchar(40) default null,
                     \`title\` varchar(40) default null,
                     \`tag\` varchar(40) default null,
+                    \`file\` longtext default null,
                     \`author\` varchar(30) default null,
                     \`reply_count\` bigint default null,
                     \`create_time\` bigint default null,
@@ -73,7 +74,7 @@ class dbInit {
         return new Promise ((resolve, reject) => {
             def.SqlQ({ sql: `create table if not exists \`article_content\` (
                     \`id\` bigint not null auto_increment,
-                    \`forum_id\` bigint default null,
+                    \`forum_id\` varchar(40) default null,
                     \`article_id\` varchar(40) default null,
                     \`content\` longtext default null,
                     primary key (\`id\`)

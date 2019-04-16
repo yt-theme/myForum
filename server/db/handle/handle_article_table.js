@@ -58,20 +58,18 @@ class Handle_article_table {
         return new Promise ((resolve, reject) => {
             let promise_title = new Promise ((resolve, reject) => {
                 def.SqlQ({ sql: `
-                        insert into article (forum_id, article_id, title, tag, author, reply_count, create_time)
-                        values (${forum_id}, ${article_id}, ${title}, ${tag}, ${author}, 0, ${create_time})
-                    `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+                        insert into article (forum_id, article_id, title, file, tag, author, reply_count, create_time) values (?, ?, ?, ?, ?, ?, ?, ?)
+                    `, values: [forum_id, article_id, title, file, tag, author, 0, create_time] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
             
             let promise_content = new Promise ((resolve, reject) => {
                 def.SqlQ({ sql: `
-                        insert into article_content (forum_id, article_id, content)
-                        values (${forum_id}, ${article_id}, ${content})
-                    `, values: [] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
+                        insert into article_content (forum_id, article_id, content) values (?, ?, ?)
+                    `, values: [forum_id, article_id, content] }).then((res) => { resolve(res) }).catch((reason) => { reject(reason) }) })
             
-            Promise.all([promise_title, promise_content]).then((valueArr) => {
-                let title_result=valueArr[0],  content_result=valueArr[1]
-                resolve([valueArr])
-            }).catch((v) => { reject(valueArr) })
+            Promise.all([promise_title, promise_content]).then((v) => {
+                // let title_result=valueArr[0],  content_result=valueArr[1]
+                resolve(v)
+            }).catch((v) => { reject(v) })
         })
     }
 }

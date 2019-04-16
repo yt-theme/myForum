@@ -22,7 +22,7 @@ class Handle_article {
                 // 接收的数据
                 let dataObject = querystring.parse(decodeURI(reqData))
                 // 插入数据库
-                methods.Handle_article({
+                new methods.Handle_article({
                     'forum_id':     dataObject['forum_id'] || 'Electric',
                     'article_id':   new utils.Create_uuid().v4(),
                     'title':        dataObject['title'],
@@ -30,17 +30,24 @@ class Handle_article {
                     'file':         dataObject['file'],
                     'tag':          dataObject['tag'],
                     'author':       dataObject['author'],
-                    'create_time':  Date.parse(new Date()).toString()
-                }).insertArticle().then((v) => {
+                    'create_time':  Number(Date.parse(new Date()).toString())
+                })
+                .insertArticle().then((v) => {
                     console.log('insertArticle =>', v)
-                    // 返回数据
+                    // 返回 ok 数据
                     res.end(JSON.stringify({
                         'r': 1,
                         'msg': 'ok',
                     }) )
                 })
                 .catch((v) => { 
-                    console.log("新增帖失败 => method => handle_article") 
+                    console.log("新增帖失败 => model => method => handle_article =>", v)
+                    // 返回 err 数据
+                    res.end(JSON.stringify({
+                        'r': 0,
+                        'msg': 'err',
+                        'data': dataObject
+                    }) )
                 })
             })
         } else {
