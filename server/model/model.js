@@ -23,5 +23,8 @@ module.exports = {
     // 登录
     Api_login      : (req, res) => { return new method.UserLogin(req, res).login() },
     // 检查登录
-    Api_checklogin : (req, res) => { return new method.UserLogin(req, res).checkLogin() }    
+    Api_checklogin : (req, res) => { return new method.UserLogin(req, res).checkLogin() },
+
+    // 发贴
+    Create_article : (req, res) => { return new method.Handle_article(req, res).createArticle() }
 }

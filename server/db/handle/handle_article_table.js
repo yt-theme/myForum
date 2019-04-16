@@ -1,5 +1,4 @@
 let def = require("../def/def")
-let utils = require("../../utils/utils")
 
 class Handle_article_table {
     constructor (obj) {
@@ -56,9 +55,6 @@ class Handle_article_table {
             content=this.content,    file=this.file,               tag=this.tag,
             author=this.author,      create_time=this.create_time
         
-        // 生成 uuid
-        let uuid = new utils.Create_uuid().v1()
-
         return new Promise ((resolve, reject) => {
             let promise_title = new Promise ((resolve, reject) => {
                 def.SqlQ({ sql: `

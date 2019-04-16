@@ -26,6 +26,9 @@ server.on('request', function (req, res) {
         // 检查登录状态
         case '/checklogin' : model.Api_checklogin(req, res); break
 
+        // 发帖
+        case '/create_article' : model.Create_article(req, res); break
+
 
         default: break
     }

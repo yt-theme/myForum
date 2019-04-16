@@ -48,7 +48,7 @@ class UserLogin {
                                     "checkin": 1 })
                                 .then((v2) => {
                                     // 返回数据
-                                    res.end(JSON.stringify({ 
+                                    res.end(JSON.stringify({
                                         'r': 1,
                                         'msg': 'ok',
                                         'token': token,
