@@ -66,7 +66,8 @@ window.addEventListener('load', function () {
                         // token存入本地存储
                         let queryRes = v['data']
                         if (queryRes['r'] === 1) {
-                            new handleLocalStorage({'token': { 'id': queryRes['id'] }}).set(); new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
+                            new handleLocalStorage({'id': { 'id': queryRes['id'] }}).set()
+                            new handleLocalStorage({'token': { 'token': queryRes['token'] }}).set()
                             checkLoginStatu(1)
                             // 提示信息
                             .then((v) => { if (v) { messagePop('登录成功'); delCompoAll('.comp_loginModal'); refresh() } else { messagePop('登录失败') } })
@@ -221,8 +222,40 @@ window.addEventListener('load', function () {
 
             },
             // 事件绑定
+            // 隐藏框
             close () {
                 selectE('#main_publish')[0].style.left = '-100%'
+            },
+            // 发帖动作
+            submit () {
+                // 标题
+                let title = selectE('#comp_main_publish_title')[0].value
+                // 标签
+                let tag = selectE('#comp_main_publist_tag')[0].value
+                // 内容
+                let content = selectE('#comp_main_publish_markdown')[0].value
+                // 无标题则警告
+                if (! title) { messagePop('发布文章请至少填写标题'); return false }
+                console.log('title', title, 'tag', tag, 'content', content)
+                // 发送请求
+                ajax('post', '/create_article', {
+                    'forum_id': 'Electric',
+                    'token': getLocalStorageToken(['token'])['token']['token'],
+                    'title': title,
+                    'content': content,
+                    'file': '',
+                    'tag': tag,
+                    'author': getLocalStorageId(['id'])['id']['id']
+                }).then((v)  => { 
+                    // token存入本地存储
+                    let queryRes = v['data']
+                    if (queryRes['r'] === 1) {
+                        messagePop('发布成功')
+                        selectE('#main_publish')[0].style.left = '-100%'                       
+                        // 自动关闭登录框
+                    } else { messagePop('发布失败') }
+                })
+                .catch((v) => { console.log('err', v) })
             }
         }
         const html = `
@@ -230,24 +263,24 @@ window.addEventListener('load', function () {
                 <i onclick="js.${name}.close()" class="pos_a block cur_p bor_ra_50 comp_main_publish_wrapper_close"></i>
                 <form class="w_100 padd_lr_13px h_100 comp_main_publish_inner">
                     <div class="flex flex_just_betw flex_alig_cent comp_main_publish_title">
-                        <input class="w_100 bor_0 bgc_f2f2f2 padd_8px"/>
+                        <input id="comp_main_publish_title" placeholder="title" class="w_100 bor_0 bgc_f2f2f2 padd_8px"/>
                         <div>
                             <span class="color_9cacb9 padd_l_8px">
                                 <span class="bgc_f2f2f2 bor_ra_16 padd_6_5px padd_lr_13px cur_p">插入图片</span>
                             </span>
                             <span class="color_9cacb9 padd_l_8px">
-                                <select class="bgc_f2f2f2 outline_n bor_ra_16 color_9cacb9 appearance_n bor_ra_16 bor_0 padd_5_5px padd_lr_13px cur_p">
+                                <select id="comp_main_publist_tag" class="bgc_f2f2f2 outline_n bor_ra_16 color_9cacb9 appearance_n bor_ra_16 bor_0 padd_5_5px padd_lr_13px cur_p">
                                     <option value="0" selected>默认标签</option>
                                     <option value="1">技术分享</option>
                                 </select>
                             </span>
                             <span class="color_9cacb9 padd_l_8px">
-                                <span class="bgc_f2f2f2 color_9cacb9 bor_ra_16 padd_6_5px padd_lr_13px cur_p">发布文章</span>
+                                <span onclick="js.${name}.submit()" id="comp_main_publish_publish" class="bgc_f2f2f2 color_9cacb9 bor_ra_16 padd_6_5px padd_lr_13px cur_p">发布文章</span>
                             </span>
                         </div>
                     </div>
                     <div class="comp_main_publist_content">
-                        <textarea class="w_100 bor_0 bgc_f2f2f2 padd_8px"></textarea>
+                        <textarea id="comp_main_publish_markdown" placeholder="markdown" class="w_100 bor_0 bgc_f2f2f2 padd_8px"></textarea>
                     </div>
                 </form>
             </div>
