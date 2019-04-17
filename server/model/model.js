@@ -26,5 +26,5 @@ module.exports = {
     Api_checklogin : (req, res) => { return new method.UserLogin(req, res).checkLogin() },
 
     // 发贴
-    Create_article : (req, res) => { return new method.Handle_article(req, res).createArticle() }
+    Api_createArticle : (req, res) => { return new method.Handle_article(req, res).createArticle() }
 }

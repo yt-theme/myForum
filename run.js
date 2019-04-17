@@ -27,7 +27,7 @@ server.on('request', function (req, res) {
         case '/checklogin' : model.Api_checklogin(req, res); break
 
         // 发帖
-        case '/create_article' : model.Create_article(req, res); break
+        case '/create_article' : model.Api_createArticle(req, res); break
 
 
         default: break
